@@ -105,7 +105,8 @@ Gunakan akun superuser yang telah dibuat saat instalasi.
 
 ### Halaman yang Tersedia
 
-- `/` - Dashboard utama (login required)
+- `/` - Homepage (not available now)
+- `/dashboard` - Dashboard utama (login required)
 - `/login/` - Halaman login
 - `/logout/` - Logout
 - `/admin/` - Panel admin Django
@@ -130,8 +131,10 @@ examind/
 │   └── views.py                # View functions
 ├── 📁 templates/               # HTML templates
 │   ├── base.html               # Base template
-│   ├── home.html               # Dashboard
+│   ├── home.html               # Homepage
+│   ├── dashboard.html          # Dashboard
 │   ├── login.html              # Login page
+│   ├── logout.html             # Logout page
 │   └── ...                     # File html lain
 ├── 📁 static/                  # Static files
 │   ├── css/

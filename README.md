@@ -219,6 +219,11 @@ python manage.py runserver --settings=examind.settings --verbosity=2
     <td><strong>Randy Dinky Saputra</strong></td>
     <td><a href="https://github.com/DinkyTrady">@DinkyTrady</a></td>
   </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/144525698?v=4" width="60" style="border-radius: 50%;" /></td>
+    <td><strong>Ello Adrian Hariadi</strong></td>
+    <td><a href="https://github.com/Driannnn">@Driannnn</a></td>
+  </tr>
 </table>
 
 ### Cara Berkontribusi

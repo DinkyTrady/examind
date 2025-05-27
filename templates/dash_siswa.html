@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Examind{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+<nav class="bg-slate-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-white">Examind</h1>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="{% url 'core:dashboard' %}" 
+                   class="bg-orange-500 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Dashboard
+                </a>
+                <a href="#" 
+                   class="text-white hover:bg-slate-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Pengaturan
+                </a>
+                <a href="#" 
+                   class="text-white hover:bg-slate-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    chat admin
+                </a>
+            </div>
+
+            <!-- User Menu -->
+            <div class="flex items-center space-x-4">
+                <span class="text-white text-sm">Welcome, {{ user.first_name|default:user.username }}!</span>
+                <form method="post" action="{% url 'core:logout' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="return confirm('Are you sure you want to logout?')">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gray-100 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-orange-400 to-yellow-400 rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-white mb-2">
+                    Welcome back, {{ user.first_name|default:user.username }}! 🎓
+                </h2>
+                <p class="text-white/90 text-lg">Ready to continue your learning journey?</p>
+            </div>
+        </div>
+
+        <!-- Main Action Cards -->
+        <div class="bg-teal-500 rounded-2xl shadow-lg p-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pesan Teman -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Pesan Teman</h3>
+                </div>
+
+                <!-- Jadwal -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Jadwal</h3>
+                </div>
+
+                <!-- Ujian -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Ujian</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

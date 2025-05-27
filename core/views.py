@@ -21,3 +21,8 @@ def logout(request):
 
 def logout_success(request):
     return render(request, "logout.html")
+
+#Halaman dahsboard siswa
+@login_required
+def dash_siswa(request):
+    return render(request, 'dash_siswa.html')

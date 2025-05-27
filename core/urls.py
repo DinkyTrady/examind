@@ -14,4 +14,5 @@ urlpatterns = [
         auth_views.LogoutView.as_view(template_name="logout.html"),
         name="logout",
     ),
+    path('dash_siswa/', views.dash_siswa, name='dash_siswa'),
 ]

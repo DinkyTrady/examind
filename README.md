@@ -233,6 +233,11 @@ python manage.py runserver --settings=examind.settings --verbosity=2
     <td><strong>Rendy Syahputra Riyadi</strong></td>
     <td><a href="https://github.com/Rendyprobe">@Rendyprobe</a></td>
   </tr>
+   <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/207875678?v=4" width="60" style="border-radius: 50%;" /></td>
+    <td><strong>Aditya Febrian</strong></td>
+    <td><a href="https://github.com/AdityaFebrian23">@AdityaFebrian23</a></td>
+  </tr>
 </table>
 
 ### Cara Berkontribusi

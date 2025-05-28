@@ -8,14 +8,14 @@
         <!-- Logo/Brand Section -->
         <div class="text-center">
             <h1 class="text-6xl font-bold text-primary-light mb-2">Examind</h1>
-            <p class="text-primary-light/80 text-lg">Welcome back! Please sign in to continue.</p>
+            <p class="text-primary-light/80 text-lg">Please sign in to continue.</p>
         </div>
 
         <!-- Login Form -->
         <div class="bg-primary-light rounded-2xl shadow-2xl p-8 border border-primary-cyan/20">
             <form method="post" class="space-y-6">
                 {% csrf_token %}
-                
+
                 {% if form.errors %}
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
                         <strong>Error:</strong> Please check your username and password.
@@ -47,14 +47,6 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input type="checkbox" 
-                               id="remember-me" 
-                               class="h-4 w-4 text-primary-orange focus:ring-primary-orange border-primary-cyan/30 rounded">
-                        <label for="remember-me" class="ml-2 block text-sm text-primary-dark">
-                            Remember me
-                        </label>
-                    </div>
                     <a href="#" class="text-sm text-primary-teal hover:text-primary-orange transition-colors duration-200">
                         Forgot password?
                     </a>
@@ -65,15 +57,6 @@
                     Sign In
                 </button>
             </form>
-
-            <div class="mt-6 text-center">
-                <p class="text-primary-dark/70">
-                    Don't have an account? 
-                    <a href="#" class="text-primary-teal hover:text-primary-orange font-semibold transition-colors duration-200">
-                        Sign up here
-                    </a>
-                </p>
-            </div>
         </div>
 
         <!-- Footer -->

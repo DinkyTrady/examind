@@ -9,6 +9,31 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 @csrf_exempt
 def login_view(request: HttpRequest):
+    # Check if someone are already authenticate with the server
+    # and it will return depend on the role of the user
+    if request.user.is_authenticated:
+        username = request.user.username
+
+        if hasattr(request.user, "siswa"):
+            messages.warning(
+                request,
+                f"Anda telah login sebagai {username} otomatis redirect ke dashboard",
+            )
+            return redirect("account:siswa_dashboard")
+        elif hasattr(request.user, "guru"):
+            messages.warning(
+                request,
+                f"Anda telah login sebagai {username} otomatis redirect ke dashboard",
+            )
+            return redirect("account:guru_dashboard")
+        else:
+            logout(request)
+            return render(
+                request,
+                "login.html",
+                {"error": "Akun tidak terdaftar sebagai Siswa atau Guru."},
+            )
+
     error = None
     if request.method == "POST":
         username = request.POST.get("username")
@@ -27,22 +52,22 @@ def login_view(request: HttpRequest):
                 error = "Akun tidak terdaftar sebagai Siswa atau Guru."
         else:
             error = "Username atau password salah."
-            pass
     else:
         return render(request, "login.html", {"error": error})
 
 
-@login_required
+@login_required(login_url="account:login")
 def logout_view(request: HttpRequest):
     if request.method == "POST":
-        username = request.user.username if request.user.is_authenticated else "User"
+        username = request.user.username
         logout(request)
         messages.success(
-            request, f"You have been successfully logged out. See you, {username}!"
+            request,
+            f"You have been successfully logged out. See you, {username}!",
         )
         return redirect("homeweb:index")
 
 
-@login_required
+@login_required(login_url="account:login")
 def siswa_dashboard(request: HttpRequest):
     return render(request, "siswa/dashboard.html", {"user": request.user})

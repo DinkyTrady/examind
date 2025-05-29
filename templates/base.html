@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Examind{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                dark: "#11222c",
+                teal: "#179299",
+                orange: "#f69000",
+                cyan: "#04a5e5",
+                yellow: "#f6c624",
+                light: "#eff1f5",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #eff1f5;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-primary-light">
+    {% block content %}
+    {% endblock %}
+
+    <script>
+      // Add any custom JavaScript here
+      console.log("Examind loaded successfully! 🚀");
+    </script>
+  </body>
+</html>

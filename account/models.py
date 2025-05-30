@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
 
 # Create your models here.
 class User(AbstractBaseUser):
-    ROLE_CHOICES = {("siswa", "Siswa"), ("guru", "Guru"), ("admin", "Admin")}
+    ROLE_CHOICES = [("siswa", "Siswa"), ("guru", "Guru"), ("admin", "Admin")]
 
     full_name = models.CharField(max_length=250, blank=True, null=True)
     username = models.CharField(max_length=150, unique=True)
@@ -65,26 +65,15 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_lable):
         return True
 
-    def get_short_name(self):
-        return self.email.split("@")[0]
-
 
 class Siswa(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     kelas = models.CharField(max_length=10)
     nis = models.CharField(max_length=25)
 
-    def username(self):
-        return self.user.username
-
-    def full_name(self):
-        return self.user.full_name
-
-    def email(self):
-        return self.user.email
-
     def save(self, *args, **kwargs):
         self.user.role = "siswa"
+        self.user.save()
         return super().save(*args, **kwargs)
 
 
@@ -94,4 +83,5 @@ class Guru(models.Model):
 
     def save(self, *args, **kwargs):
         self.user.role = "guru"
+        self.user.save()
         return super().save(*args, **kwargs)

@@ -44,11 +44,40 @@
                 <span class="text-gray-700 text-sm">Welcome, {{ user.username }}!</span>
                 <form method="post" action="{% url 'account:logout_view' %}" class="inline">
                     {% csrf_token %}
-                    <button type="submit" 
+                    <button type="button"
                             class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                            onclick="return confirm('Are you sure you want to logout?')">
+                            id="logout-btn">
                         Logout
                     </button>
+                    <!-- Modal -->
+                    <div id="logout-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded shadow-md text-center">
+                            <p class="mb-4">Apakah anda yakin ingin keluar?</p>
+                            <button type="button"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                                    id="cancel-logout">
+                                Tidak
+                            </button>
+                            <button type="submit"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded mr-2">
+                                Keluar
+                            </button>
+                        </div>
+                    </div>
+                    <script>
+                        const logoutBtn = document.getElementById('logout-btn');
+                        const logoutModal = document.getElementById('logout-modal');
+                        const cancelLogout = document.getElementById('cancel-logout');
+
+                        logoutBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            logoutModal.classList.remove('hidden');
+                        });
+
+                        cancelLogout.addEventListener('click', function() {
+                            logoutModal.classList.add('hidden');
+                        });
+                    </script>
                 </form>
             </div>
         </div>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from exam.models import Exam, Question, Option, StudentAnswer
+from cbt.models import Exam, Question, Option, StudentAnswer
 
 admin.site.register(Exam)
 admin.site.register(Question)

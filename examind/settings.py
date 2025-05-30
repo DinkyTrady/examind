@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "account",
     "homeweb",
-    "lessons",
-    "exam",
+    "cbt",
 ]
 
 MIDDLEWARE = [

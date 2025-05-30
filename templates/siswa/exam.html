@@ -1,4 +1,4 @@
-<!-- templates/cbt/exam.html -->
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -307,7 +307,7 @@
             const form = document.getElementById('questionForm');
             const formData = new FormData(form);
             
-            fetch("{% url 'exam:save_answer' %}", {
+            fetch("{% url 'cbt:save_answer' %}", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -331,7 +331,7 @@
         
         function markForReview() {
             // Implementation for marking question for review
-            fetch('{% url "exam:mark_review" %}', {
+            fetch('{% url "cbt:mark_review" %}', {
                 method: 'POST',
                 body: JSON.stringify({
                     question_id: {{ current_question.id }},
@@ -370,7 +370,7 @@
         function submitExam() {
             saveCurrentAnswer();
             
-            fetch('{% url "exam:submit_exam" %}', {
+            fetch('{% url "cbt:submit_exam" %}', {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
@@ -378,7 +378,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '{% url "exam:exam_result" exam_id %}';
+                    window.location.href = '{% url "cbt:exam_result" exam_id %}';
                 }
             });
         }

@@ -5,7 +5,7 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-blue?style=for-the-badge&logo=tailwindcss)
 
 > [!WARNING]
-> this project is movin project to the refactor branch, since we decide to made it more modular between apps.
+> this project is moving project to the [refactor](https://github.com/DinkyTrady/examind/tree/refactor) branch, since we decide to made it more modular between apps.
 
 **Examind** adalah platform pembelajaran interaktif yang dirancang untuk membantu siswa dan mahasiswa dalam proses belajar.
 

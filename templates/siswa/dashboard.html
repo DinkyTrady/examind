@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Siswa - Examind{% endblock %}
+
+<!-- this is css! -->
+<style>
+  .modal-backdrop {
+    transition: opacity 0.3s ease;
+  }
+  .modal-backdrop[style*="display: none"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+{% block content %}
+<!-- Navigation -->
+<nav class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-teal-600">Examind</h1>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="{% url 'account:siswa_dashboard' %}" 
+                   class="bg-orange-500 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Dashboard
+                </a>
+                <a href="#" 
+                   class="text-gray-700 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Pengaturan
+                </a>
+                <a href="#"
+                   class="text-gray-700 hover:bg-orange-500 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    chat admin
+                </a>
+            </div>
+
+            <!-- User Menu -->
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-700 text-sm">Welcome, {{ user.username }}!</span>
+                <form method="post" action="{% url 'account:logout_view' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                            onclick="return confirm('Are you sure you want to logout?')">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="min-h-screen py-8">
+    {% if messages %}
+      <div
+        class="fixed inset-0 z-50 bg-black bg-opacity-50 modal-backdrop"
+        id="errorModal"
+      >
+        <div class="flex items-center justify-center min-h-screen p-4">
+          <div
+            class="bg-white rounded-lg shadow-xl max-w-md w-full modal-content mx-4"
+          >
+            <div
+              class="bg-primary-orange text-white p-4 rounded-t-lg flex justify-between items-center"
+            >
+              <h5 class="text-lg font-semibold">Terjadi Kesalahan</h5>
+              <button
+                type="button"
+                class="text-white hover:text-gray-200 transition duration-200 p-1"
+                onclick="closeModal('errorModal')"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div class="p-6">
+              {% for message in messages %}
+                <p class="text-gray-700">{{ message }}</p>
+              {% endfor %}
+            </div>
+            <div class="px-6 pb-6 flex justify-end">
+              <button
+                type="button"
+                class="bg-primary-orange hover:bg-primary-orange text-white px-6 py-2 rounded transition duration-200"
+                onclick="closeModal('errorModal')"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-orange-400 to-yellow-400 rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-white mb-2">
+                    Welcome back, {{ user.username }}! 🎓
+                </h2>
+                <p class="text-white/90 text-lg">Ready to continue your learning journey?</p>
+            </div>
+        </div>
+
+        <!-- Main Action Cards -->
+        <div class="bg-teal-500 rounded-2xl shadow-lg p-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pesan Teman -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Pesan Teman</h3>
+                </div>
+
+                <!-- Jadwal -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Jadwal</h3>
+                </div>
+
+                <!-- Ujian -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Ujian</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Optional: Auto-close after 3 seconds
+  window.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('errorModal');
+    if (modal) {
+      setTimeout(() => {
+        closeModal('errorModal');
+      }, 3000);
+    }
+  });
+</script>
+{% endblock %}

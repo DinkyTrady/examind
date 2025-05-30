@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "account",
     "homeweb",
     "lessons",
+    "exam",
 ]
 
 MIDDLEWARE = [

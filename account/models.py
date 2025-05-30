@@ -36,13 +36,13 @@ class UserManager(BaseUserManager):
 
 # Create your models here.
 class User(AbstractBaseUser):
-    ROLE_CHOICES = {("siswa", "Siswa"), ("guru", "Guru"), ("none", "None")}
+    ROLE_CHOICES = {("siswa", "Siswa"), ("guru", "Guru"), ("admin", "Admin")}
 
     full_name = models.CharField(max_length=250, blank=True, null=True)
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=120)
     email = models.EmailField(max_length=150, unique=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="none")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="admin")
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)

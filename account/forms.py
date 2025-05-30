@@ -15,7 +15,18 @@ class SiswaCreationForm(forms.ModelForm):
 
     class Meta:
         model = Siswa
-        fields = ["nis", "full_name", "email"]  # Field khusus Siswa, jika ada
+        fields = ["nis", "kelas"]  # Field khusus Siswa, jika ada
+
+    field_order = [
+        "nis",
+        "kelas",
+        "full_name",
+        "username",
+        "email",
+        "password",
+        "role",
+        "is_active",
+    ]
 
     def save(self, commit=True):
         user = User.objects.create_user(
@@ -29,3 +40,9 @@ class SiswaCreationForm(forms.ModelForm):
         if commit:
             siswa.save()
         return siswa
+
+
+class SiswaChangeForm(forms.ModelForm):
+    class Meta:
+        model = Siswa
+        fields = ["kelas"]

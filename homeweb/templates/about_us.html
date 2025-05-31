@@ -1,305 +1,166 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Examind</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.0/cdn.min.js" defer></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-        .glass-effect { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .animate-fade-in { animation: fadeInUp 0.8s ease-out forwards; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .roadmap-item { opacity: 1; transform: translateX(0); }
-        .roadmap-item:nth-child(even) .ml-16 { animation: slideInRight 0.6s ease-out; }
-        .roadmap-item:nth-child(odd) .ml-16 { animation: slideInLeft 0.6s ease-out; }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Header/Navigation -->
-    <nav class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-around">
-            <a href="#" class="text-2xl font-bold text-teal-600">Examind</a>
-            <div class="hidden md:flex space-x-4">
-                <a href="/" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium">Home</a>
-                <a href="/aboutus" class="py-2 px-6 text-teal-600 hover:text-teal-700 font-medium">About Us</a>
-                <a href="/login/" class="py-2 px-6 rounded-lg border bg-teal-600 text-white hover:bg-teal-700 font-semibold transition duration-300">Login</a>
-            </div>
-            <!-- Mobile menu button -->
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="fixed bottom-6 right-6 z-50 bg-white shadow-lg rounded-full p-3 text-indigo-600 focus:outline-none md:static md:bg-transparent md:shadow-none md:rounded-none md:p-0">
-                    <!-- Menu Icon (hamburger) -->
-                    <svg id="menu-icon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                    <!-- Close Icon (X) - hidden by default -->
-                    <svg id="close-icon" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include "nav.html" %}
+
+  <!-- Hero Section -->
+  <section class="bg-teal-500 text-white py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="animate-float mb-8">
+          <div
+            class="w-24 h-24 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6"
+          >
+            <i class="fas fa-graduation-cap text-4xl"></i>
+          </div>
         </div>
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">Tentang Examind</h1>
+        <p class="text-xl md:text-2xl opacity-90 leading-relaxed">
+          Platform CBT Modern untuk Transformasi Digital Pendidikan Indonesia
+        </p>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" class="w-full h-auto fill-gray-50">
+        <path
+          d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+        ></path>
+      </svg>
+    </div>
+  </section>
 
-        <div id="mobile-menu" class="flex flex-col fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-40 transform translate-x-full transition-transform duration-300 md:hidden px-6 py-8">
-            <a href="/" class="py-2 text-gray-700 hover:text-teal-600 font-medium">Home</a>
-            <a href="/aboutus" class="py-2 text-teal-600 hover:text-teal-700 font-medium">About Us</a>
-            <a href="/login/" class="py-2 mt-2 rounded-lg text-center text-white bg-teal-500 hover:bg-teal-700 font-semibold transition duration-500">Login</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="bg-teal-500 text-white py-20 relative overflow-hidden">
-        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="animate-float mb-8">
-                    <div class="w-24 h-24 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-graduation-cap text-4xl"></i>
-                    </div>
-                </div>
-                <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                    Tentang Examind
-                </h1>
-                <p class="text-xl md:text-2xl opacity-90 leading-relaxed">
-                    Platform CBT Modern untuk Transformasi Digital Pendidikan Indonesia
-                </p>
+  <!-- Visi Misi Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Visi & Misi</h2>
+        <div class="w-24 h-1 bg-orange-500 mx-auto"></div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div
+          class="bg-white p-8 rounded-2xl shadow-lg card-hover border-l-4 border-teal-500"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4"
+            >
+              <i class="fas fa-eye text-teal-600 text-xl"></i>
             </div>
+            <h3 class="text-2xl font-bold text-gray-800">Visi</h3>
+          </div>
+          <p class="text-gray-600 leading-relaxed text-lg">
+            Menjadi platform Computer Based Test terdepan di Indonesia yang
+            memungkinkan transformasi digital pendidikan dengan teknologi
+            modern, mudah digunakan, dan dapat diakses oleh semua kalangan.
+          </p>
         </div>
-        <div class="absolute bottom-0 left-0 right-0">
-            <svg viewBox="0 0 1440 120" class="w-full h-auto fill-gray-50">
-                <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
-            </svg>
+        <div
+          class="bg-white p-8 rounded-2xl shadow-lg card-hover border-l-4 border-orange-500"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4"
+            >
+              <i class="fas fa-bullseye text-orange-600 text-xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Misi</h3>
+          </div>
+          <ul class="text-gray-600 leading-relaxed text-lg space-y-3">
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
+              Mengembangkan platform CBT yang user-friendly dan reliable
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
+              Menyediakan solusi ujian digital yang aman dan efisien
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
+              Mendukung digitalisasi sistem pendidikan Indonesia
+            </li>
+          </ul>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Visi Misi Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Visi & Misi</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto"></div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover border-l-4 border-teal-500">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-eye text-teal-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800">Visi</h3>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed text-lg">
-                        Menjadi platform Computer Based Test terdepan di Indonesia yang memungkinkan transformasi digital pendidikan dengan teknologi modern, mudah digunakan, dan dapat diakses oleh semua kalangan.
-                    </p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg card-hover border-l-4 border-orange-500">
-                    <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-bullseye text-orange-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800">Misi</h3>
-                    </div>
-                    <ul class="text-gray-600 leading-relaxed text-lg space-y-3">
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
-                            Mengembangkan platform CBT yang user-friendly dan reliable
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
-                            Menyediakan solusi ujian digital yang aman dan efisien
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check-circle text-teal-500 mt-1 mr-3"></i>
-                            Mendukung digitalisasi sistem pendidikan Indonesia
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <!-- Team Story Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6">Cerita Tim Kami</h2>
+        <div class="w-24 h-1 bg-orange-500 mx-auto mb-12"></div>
+        <div class="bg-teal-50 p-8 rounded-2xl">
+          <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            Examind lahir dari kebutuhan akan sistem ujian digital yang mudah
+            digunakan dan dapat diandalkan. Tim kami terdiri dari developer
+            berpengalaman yang memahami tantangan dunia pendidikan di era
+            digital.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Dengan latar belakang teknologi dan passion dalam pendidikan, kami
+            berkomitmen untuk terus mengembangkan platform yang tidak hanya
+            canggih secara teknologi, tetapi juga mudah digunakan oleh
+            educator dan siswa di seluruh Indonesia.
+          </p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Team Story Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold text-gray-800 mb-6">Cerita Tim Kami</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto mb-12"></div>
-                <div class="bg-teal-50 p-8 rounded-2xl">
-                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                        Examind lahir dari kebutuhan akan sistem ujian digital yang mudah digunakan dan dapat diandalkan. Tim kami terdiri dari developer berpengalaman yang memahami tantangan dunia pendidikan di era digital.
-                    </p>
-                    <p class="text-lg text-gray-700 leading-relaxed">
-                        Dengan latar belakang teknologi dan passion dalam pendidikan, kami berkomitmen untuk terus mengembangkan platform yang tidak hanya canggih secara teknologi, tetapi juga mudah digunakan oleh educator dan siswa di seluruh Indonesia.
-                    </p>
-                </div>
+  <!-- Contact Section -->
+  <section class="py-20 bg-black text-white relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Hubungi Kami</h2>
+        <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
+        <p class="text-xl opacity-90">
+          Ada pertanyaan atau ingin berkolaborasi? Kami siap membantu!
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="text-center glass-effect p-6 rounded-xl card-hover">
+          <a href="https://wa.me/+6281234329998">
+            <div
+              class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fab fa-whatsapp text-2xl text-white"></i>
             </div>
+            <h3 class="text-xl font-semibold mb-2">WhatsApp</h3>
+            <p class="text-sm opacity-75">Chat dengan kami</p>
+          </a>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="py-20 bg-black text-white relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">Hubungi Kami</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
-                <p class="text-xl opacity-90">
-                    Ada pertanyaan atau ingin berkolaborasi? Kami siap membantu!
-                </p>
+        <div class="text-center glass-effect p-6 rounded-xl card-hover">
+          <a href="https://github.com/DinkyTrady/examind">
+            <div
+              class="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="fab fa-github text-2xl text-white"></i>
             </div>
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="text-center glass-effect p-6 rounded-xl card-hover">
-                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fab fa-whatsapp text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">WhatsApp</h3>
-                    <p class="opacity-90">+62 85-645-162-734-</p>
-                    <p class="text-sm opacity-75">Chat dengan tim support</p>
-                </div>
-                <div class="text-center glass-effect p-6 rounded-xl card-hover">
-                    <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fab fa-github text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">GitHub</h3>
-                    <p class="opacity-90">https://github.com/DinkyTrady/examind</p>
-                    <p class="text-sm opacity-75">Open source projects</p>
-                </div>
-            </div>
+            <h3 class="text-xl font-semibold mb-2">GitHub</h3>
+            <p class="text-sm opacity-75">Open source projects</p>
+          </a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-black text-white py-12 border-t border-gray-800">
-        <div class="container mx-auto px-6">
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-6">
-                    <div class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center mr-3">
-                        <i class="fas fa-graduation-cap text-xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold">Examind</h3>
-                </div>
-                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
-                   @KELOMPOK 2
-                </p>
-            </div>
+  <!-- Footer -->
+  <footer class="bg-black text-white py-12 border-t border-gray-800">
+    <div class="container mx-auto px-6">
+      <div class="text-center">
+        <div class="flex items-center justify-center mb-6">
+          <div
+            class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center mr-3"
+          >
+            <i class="fas fa-graduation-cap text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold">Examind</h3>
         </div>
-    </footer>
-
-    <script>
-        // Mobile menu functionality
-        const menuNav = document.getElementById('mobile-menu');
-        const menuBtn = document.getElementById('mobile-menu-button');
-        const menuIcon = document.getElementById('menu-icon');
-        const closeIcon = document.getElementById('close-icon');
-
-        menuBtn.addEventListener('click', () => {
-            if (menuNav.classList.contains('translate-x-full')) {
-                menuNav.classList.remove('translate-x-full');
-                menuIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-            } else {
-                menuNav.classList.add('translate-x-full');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-            }
-        });
-
-        // Developer carousel for mobile
-        document.addEventListener('DOMContentLoaded', function() {
-            window.addEventListener('resize', function() {
-                const developers = document.querySelectorAll('#developers-grid > div');
-                
-                if (window.innerWidth >= 1280) {
-                    // On large screens, show all developers
-                    developers.forEach(dev => {
-                        dev.style.display = 'flex';
-                    });
-                } else {
-                    // On small screens, maintain the carousel behavior
-                    updateDevDisplay();
-                }
-            });
-
-            // Only run on mobile/small screens
-            if (window.innerWidth < 1280) {
-                const developers = document.querySelectorAll('#developers-grid > div');
-                const prevBtn = document.getElementById('prev-dev');
-                const nextBtn = document.getElementById('next-dev');
-                const currentDevElement = document.getElementById('current-dev');
-                const totalDevs = developers.length;
-                let currentIndex = 0;
-                
-                // Initialize: hide all developers except the first one
-                function updateDevDisplay() {
-                    developers.forEach((dev, index) => {
-                        dev.style.display = index === currentIndex ? 'flex' : 'none';
-                    });
-                    currentDevElement.textContent = currentIndex + 1;
-                }
-                
-                // Initial setup
-                updateDevDisplay();
-                
-                // Previous button click
-                prevBtn.addEventListener('click', function() {
-                    currentIndex = (currentIndex - 1 + totalDevs) % totalDevs;
-                    updateDevDisplay();
-                });
-                
-                // Next button click
-                nextBtn.addEventListener('click', function() {
-                    currentIndex = (currentIndex + 1) % totalDevs;
-                    updateDevDisplay();
-                });
-            }
-        });
-
-        // Smooth scrolling animation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add smooth reveal animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections
-            document.querySelectorAll('section').forEach(section => {
-                observer.observe(section);
-            });
-
-            // Add parallax effect to hero
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                const hero = document.querySelector('.bg-teal-500');
-                if (hero) {
-                    hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+        <p class="text-gray-400 mb-6 max-w-2xl mx-auto">@KELOMPOK 2</p>
+      </div>
+    </div>
+  </footer>
+{% endblock %}

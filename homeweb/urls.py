@@ -6,5 +6,5 @@ app_name = "homeweb"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    # path("login", views.login, name="login"),
+    path("aboutus", views.aboutus, name="about_us"),
 ]

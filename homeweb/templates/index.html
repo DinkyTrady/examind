@@ -5,7 +5,7 @@
       <a href="#" class="text-2xl font-bold text-teal-600">Examind</a>
       <div class="hidden md:flex space-x-4">
         <a href="#" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium">Home</a>
-        <a href="#about-us" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium"
+        <a href="aboutus" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium"
           >About Us</a
         >
         <a
@@ -62,7 +62,7 @@
       <a href="#" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >Home</a
       >
-      <a href="#about-us" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
+      <a href="/about_us" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >About Us</a
       >
       <a
@@ -82,7 +82,7 @@
         {% endfor %}
       </div>
     {% endif %}
-    <section class="flex-col my-[412px]">
+    <section class="flex-col my-32">
       <div class="flex-row">
         <h1 class="text-4xl sm:text-9xl font-bold text-left text-teal-600 mb-6">
           Welcome to Examind
@@ -97,21 +97,14 @@
         >
       </div>
     </section>
-    <section class="my-64" id="about-us">
-      <div class="flex flex-col md:flex-row md:justify-center md:items-stretch gap-6">
-        <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
-          <h2 class="text-lg font-bold text-teal-700 text-center md:text-left mb-2">Tentang Examind</h2>
-          <div class="text-gray-600 text-justify text-sm">
+    <section class="my-32" id="about-us">
+      <div class="flex flex-col items-center">
+        <h2 class="text-2xl font-bold text-teal-700 mb-6">Tentang Examind</h2>
+        <div class="max-w-4xl text-center">
+          <div class="text-gray-600 text-justify">
             <p>
-              Examind adalah platform digital minimalis untuk ujian dan asesmen online. Dirancang untuk kemudahan, kecepatan, dan aksesibilitas, Examind membantu guru, dosen, dan institusi pendidikan membuat, membagikan, serta menilai ujian secara efisien dan aman.
-            </p>
-          </div>
-        </div>
-        <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
-          <h2 class="text-lg font-bold text-teal-700 text-center md:text-left mb-2">Tentang Kami</h2>
-          <div class="text-gray-600 text-justify text-sm">
-            <p>
-              Saya adalah pengembang di balik Examind, berfokus pada solusi pendidikan yang sederhana dan efektif. Dengan pengalaman di bidang teknologi dan pendidikan, saya berkomitmen menghadirkan platform yang bermanfaat bagi semua pengguna.
+ExaMind adalah solusi ujian online (Computer Based Test) yang menghadirkan pengalaman evaluasi digital yang modern dan efisien. Platform ini dirancang khusus untuk memenuhi kebutuhan institusi pendidikan, perusahaan, dan organisasi dalam menyelenggarakan ujian yang aman, akurat, dan mudah dikelola.
+Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan administrator untuk membuat soal dan menilai jawaban peserta dengan mudah. Peserta ujian dapat mengakses tes dengan mudah dari berbagai perangkat, didukung sistem keamanan yang kuat guna menjamin integritas ujian.
             </p>
           </div>
         </div>
@@ -126,14 +119,14 @@
             <div class="flex justify-center items-center space-x-4 mt-6 lg:hidden">
               <button id="prev-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
                 <!-- Left arrow icon -->
-                
+                
               </button>
               <span id="dev-indicator" class="text-gray-700">
                 <span id="current-dev">1</span>/<span id="total-devs">5</span>
               </span>
               <button id="next-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
                 <!-- Right arrow icon -->
-                
+                
               </button>
             </div>
           <div class="grid grid-cols-1 xl:grid-cols-5 gap-16" id="developers-grid">

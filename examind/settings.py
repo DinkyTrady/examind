@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "account",
     "homeweb",
     "cbt",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [

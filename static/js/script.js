@@ -98,3 +98,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Optional: Auto-close after 3 seconds
+window.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("errorModal");
+  if (modal) {
+    setTimeout(() => {
+      closeModal("errorModal");
+    }, 3000);
+  }
+});

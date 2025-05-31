@@ -31,20 +31,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* for navigation homepage */
 // Mobile menu functionality
-const menuNav = document.getElementById("mobile-menu");
-const menuBtn = document.getElementById("mobile-menu-button");
-const menuIcon = document.getElementById("menu-icon");
-const closeIcon = document.getElementById("close-icon");
+document.addEventListener("DOMContentLoaded", function () {
+  const menuNav = document.getElementById("mobile-menu");
+  const menuBtn = document.getElementById("mobile-menu-button");
+  const menuIcon = document.getElementById("menu-icon");
+  const closeIcon = document.getElementById("close-icon");
 
-menuBtn.addEventListener("click", () => {
-  if (menuNav.classList.contains("translate-x-full")) {
-    menuNav.classList.remove("translate-x-full");
-    menuIcon.classList.add("hidden");
-    closeIcon.classList.remove("hidden");
-  } else {
-    menuNav.classList.add("translate-x-full");
-    menuIcon.classList.remove("hidden");
-    closeIcon.classList.add("hidden");
+  if (menuBtn && menuNav && menuIcon && closeIcon) {
+    menuBtn.addEventListener("click", () => {
+      if (menuNav.classList.contains("translate-x-full")) {
+        menuNav.classList.remove("translate-x-full");
+        menuIcon.classList.add("hidden");
+        closeIcon.classList.remove("hidden");
+      } else {
+        menuNav.classList.add("translate-x-full");
+        menuIcon.classList.remove("hidden");
+        closeIcon.classList.add("hidden");
+      }
+    });
   }
 });
 
@@ -118,15 +122,19 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // logout confirmation modal
-const logoutBtn = document.getElementById("logout-btn");
-const logoutModal = document.getElementById("logout-modal");
-const cancelLogout = document.getElementById("cancel-logout");
+document.addEventListener("DOMContentLoaded", function () {
+  const logoutBtn = document.getElementById("logout-btn");
+  const logoutModal = document.getElementById("logout-modal");
+  const cancelLogout = document.getElementById("cancel-logout");
 
-logoutBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  logoutModal.classList.remove("hidden");
-});
+  if (logoutBtn && logoutModal && cancelLogout) {
+    logoutBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      logoutModal.classList.remove("hidden");
+    });
 
-cancelLogout.addEventListener("click", function () {
-  logoutModal.classList.add("hidden");
+    cancelLogout.addEventListener("click", function () {
+      logoutModal.classList.add("hidden");
+    });
+  }
 });

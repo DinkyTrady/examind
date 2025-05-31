@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
   <nav class="bg-white shadow">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-around">
       <a href="#" class="text-2xl font-bold text-teal-600">Examind</a>
-      <div class="hidden md:flex space-x-8">
-        <a href="#" class="text-gray-700 hover:text-teal-600 font-medium">Home</a>
-        <a href="#" class="text-gray-700 hover:text-teal-600 font-medium"
-          >Features</a
-        >
-        <a href="#about-us" class="text-gray-700 hover:text-teal-600 font-medium"
+      <div class="hidden md:flex space-x-4">
+        <a href="#" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium">Home</a>
+        <a href="#about-us" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium"
           >About Us</a
         >
-      </div>
-      <div class="hidden md:flex space-x-4">
         <a
           href="/login/"
           class="py-2 px-6 rounded-lg border bg-teal-600 text-white hover:bg-teal-700 font-semibold transition duration-300"
@@ -21,11 +16,15 @@
       </div>
       <!-- Mobile menu button -->
       <div class="md:hidden">
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
         <button
           id="mobile-menu-button"
           class="fixed bottom-6 right-6 z-50 bg-white shadow-lg rounded-full p-3 text-indigo-600 focus:outline-none md:static md:bg-transparent md:shadow-none md:rounded-none md:p-0"
         >
+          <!-- Menu Icon (hamburger) -->
           <svg
+            id="menu-icon"
             class="w-8 h-8"
             fill="none"
             stroke="currentColor"
@@ -38,7 +37,23 @@
               d="M4 6h16M4 12h16M4 18h16"
             ></path>
           </svg>
+          <!-- Close Icon (X) - hidden by default -->
+          <svg 
+            id="close-icon" 
+            class="w-8 h-8 hidden" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
         </button>
+      </div>
       </div>
     </div>
 
@@ -48,9 +63,6 @@
     >
       <a href="#" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >Home</a
-      >
-      <a href="#" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
-        >Features</a
       >
       <a href="#about-us" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >About Us</a
@@ -91,7 +103,7 @@
       <div class="flex flex-col md:flex-row md:justify-center md:items-stretch gap-6">
         <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
           <h2 class="text-lg font-bold text-teal-700 text-center md:text-left mb-2">Tentang Examind</h2>
-          <div class="text-gray-600 text-center md:text-left text-sm">
+          <div class="text-gray-600 text-justify text-sm">
             <p>
               Examind adalah platform digital minimalis untuk ujian dan asesmen online. Dirancang untuk kemudahan, kecepatan, dan aksesibilitas, Examind membantu guru, dosen, dan institusi pendidikan membuat, membagikan, serta menilai ujian secara efisien dan aman.
             </p>
@@ -99,7 +111,7 @@
         </div>
         <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
           <h2 class="text-lg font-bold text-teal-700 text-center md:text-left mb-2">Tentang Kami</h2>
-          <div class="text-gray-600 text-center md:text-left text-sm">
+          <div class="text-gray-600 text-justify text-sm">
             <p>
               Saya adalah pengembang di balik Examind, berfokus pada solusi pendidikan yang sederhana dan efektif. Dengan pengalaman di bidang teknologi dan pendidikan, saya berkomitmen menghadirkan platform yang bermanfaat bagi semua pengguna.
             </p>
@@ -107,7 +119,87 @@
         </div>
       </div>
     </section>
+    <!-- Developer Section -->
+    <section class="my-64">
+      <div class="flex flex-col items-center">
+        <h2 class="text-2xl font-bold text-teal-700 mb-6">Developer</h2>
+        <div class="max-w-2xl text-center">
+            <!-- Mobile Navigation (Only visible on small screens) -->
+            <div class="flex justify-center items-center space-x-4 mt-6 lg:hidden">
+              <button id="prev-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
+                <!-- Left arrow icon -->
+                
+              </button>
+              <span id="dev-indicator" class="text-gray-700">
+                <span id="current-dev">1</span>/<span id="total-devs">5</span>
+              </span>
+              <button id="next-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
+                <!-- Right arrow icon -->
+                
+              </button>
+            </div>
+          <div class="grid grid-cols-1 xl:grid-cols-5 gap-16" id="developers-grid">
+
+            <!-- Developer 1 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/DinkyTrady.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Dinky+Trady&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Dinky Trady</h3>
+              <a href="https://github.com/DinkyTrady" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              <img src="https://github.com/favicon.ico" alt="GitHub">
+              </a>
+            </div>
+            
+            <!-- Developer 2 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/AdityaFebrian23.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Aditya+Febrian&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Aditya Febrian</h3>
+              <a href="https://github.com/AdityaFebrian23" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              <img src="https://github.com/favicon.ico" alt="GitHub">
+              </a>
+            </div>
+            
+            <!-- Developer 3 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/Driannnn.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Driannnn&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Driannnn</h3>
+              <a href="https://github.com/Driannnn" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              <img src="https://github.com/favicon.ico" alt="GitHub">
+              </a>
+            </div>
+            
+            <!-- Developer 4 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/pratamadky.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Pratama+DKY&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Pratama DKY</h3>
+              <a href="https://github.com/pratamadky" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              <img src="https://github.com/favicon.ico" alt="GitHub">
+              </a>
+            </div>
+            
+            <!-- Developer 5 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/Rendyprobe.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Rendyprobe&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Rendyprobe</h3>
+              <a href="https://github.com/Rendyprobe" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              <img src="https://github.com/favicon.ico" alt="GitHub">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
   <footer
     class="min-w-full min-h-[10rem] bg-gradient-to-tr from-blue-100 via-white to-orange-100 flex justify-between items-center px-8"
   >
@@ -116,17 +208,82 @@
     </div>
     <div>
       <a href="https://github.com/DinkyTrady/examind" target="_blank" class="text-gray-700 hover:text-teal-600 font-medium flex items-center space-x-2">
-        <svg class="w-6 h-6 inline-block mr-1" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.75-1.56-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 012.9-.39c.99.01 1.99.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.7.42.36.8 1.09.8 2.2 0 1.59-.01 2.87-.01 3.26 0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"/>
-        </svg>
+        <img src="https://github.com/favicon.ico" alt="GitHub">
         <span>GitHub</span>
       </a>
     </div>
   </footer>
+
   <script>
+    const menuNav = document.getElementById('mobile-menu');
+    const menuBtn = document.getElementById('mobile-menu-button');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    menuBtn.addEventListener('click', () => {
+      if (menuNav.classList.contains('translate-x-full')) {
+        menuNav.classList.remove('translate-x-full');
+        menuIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      } else {
+        menuNav.classList.add('translate-x-full');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      }
+    });
+
     setTimeout(() => {
       const msg = document.querySelector('.message-dissapear');
       if (msg) msg.style.display = 'none';
     }, 3000);
+
+    document.addEventListener('DOMContentLoaded', function() {
+      window.addEventListener('resize', function() {
+        const developers = document.querySelectorAll('#developers-grid > div');
+        
+        if (window.innerWidth >= 1280) {
+          // On large screens, show all developers
+          developers.forEach(dev => {
+            dev.style.display = 'flex';
+          });
+        } else {
+          // On small screens, maintain the carousel behavior
+          updateDevDisplay();
+        }
+      });
+
+      // Only run on mobile/small screens
+      if (window.innerWidth < 1280) {
+        const developers = document.querySelectorAll('#developers-grid > div');
+        const prevBtn = document.getElementById('prev-dev');
+        const nextBtn = document.getElementById('next-dev');
+        const currentDevElement = document.getElementById('current-dev');
+        const totalDevs = developers.length;
+        let currentIndex = 0;
+        
+        // Initialize: hide all developers except the first one
+        function updateDevDisplay() {
+          developers.forEach((dev, index) => {
+            dev.style.display = index === currentIndex ? 'flex' : 'none';
+          });
+          currentDevElement.textContent = currentIndex + 1;
+        }
+        
+        // Initial setup
+        updateDevDisplay();
+        
+        // Previous button click
+        prevBtn.addEventListener('click', function() {
+          currentIndex = (currentIndex - 1 + totalDevs) % totalDevs;
+          updateDevDisplay();
+        });
+        
+        // Next button click
+        nextBtn.addEventListener('click', function() {
+          currentIndex = (currentIndex + 1) % totalDevs;
+          updateDevDisplay();
+        });
+      }
+    });
   </script>
 {% endblock %}

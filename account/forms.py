@@ -31,8 +31,6 @@ class SiswaCreationForm(forms.ModelForm):
     username = forms.CharField()
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
-    # role = forms.ChoiceField(choices=[("siswa", "Siswa")])
-    is_active = forms.BooleanField(initial=True)
 
     class Meta:
         model = Siswa
@@ -46,7 +44,6 @@ class SiswaCreationForm(forms.ModelForm):
         "email",
         "password",
         "role",
-        "is_active",
     ]
 
     def save(self, commit=True):
@@ -74,8 +71,6 @@ class GuruCreationForm(forms.ModelForm):
     username = forms.CharField()
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
-    # role = forms.ChoiceField(choices=[("guru", "Guru")])
-    is_active = forms.BooleanField(initial=True)
 
     class Meta:
         model = Guru
@@ -88,7 +83,6 @@ class GuruCreationForm(forms.ModelForm):
         "email",
         "password",
         "role",
-        "is_active",
     ]
 
     def save(self, commit=True):

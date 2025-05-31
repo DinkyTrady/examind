@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+from .models import User
 
 
 # Create your views here.
@@ -43,9 +44,9 @@ def login_view(request: HttpRequest):
 
         if user is not None:
             login(request, user)
-            if hasattr(user, "siswa"):
+            if request.user.role == "siswa":
                 return redirect("account:siswa_dashboard")
-            elif hasattr(user, "guru"):
+            elif request.user.role == "guru":
                 return redirect("account:guru_dashboard")
             else:
                 logout(request)
@@ -77,4 +78,49 @@ def siswa_dashboard(request: HttpRequest):
 
 @login_required(login_url="account:login")
 def guru_dashboard(request: HttpRequest):
-    return render(request, "siswa/dashboard.html", {"user": request.user})
+    return render(request, "guru/dashboard.html", {"user": request.user})
+
+
+@login_required(login_url="account:login")
+def user_profile(request: HttpRequest):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        # Only update username if it's different and not already taken
+        if username and username != request.user.username:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already taken.")
+            else:
+                request.user.username = username
+                messages.success(request, "Username updated successfully.")
+
+        # Update password if provided
+        if password:
+            request.user.set_password(password)
+            request.user.save()
+            # Re-authenticate the user to prevent logout
+            user = authenticate(
+                request, username=request.user.username, password=password
+            )
+            if user:
+                login(request, user)
+            messages.success(request, "Password berhasil diperbarui.")
+            return redirect("account:user_profile")
+
+        request.user.save()
+
+    return render(request, "profile.html", {"user": request.user})
+
+
+@login_required(login_url="account:login")
+def user_report(request: HttpRequest):
+    if request.user.role == "siswa":
+        messages.info(request, "This feature is under development.")
+        return redirect("account:siswa_dashboard")
+    elif request.user.role == "guru":
+        messages.info(request, "This feature is under development.")
+        return redirect("account:guru_dashboard")
+    else:
+        messages.error(request, "Akun tidak terdaftar sebagai Siswa atau Guru.")
+        return redirect("account:login_view")

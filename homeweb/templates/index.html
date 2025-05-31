@@ -18,7 +18,7 @@
       <div class="md:hidden">
         <button
           id="mobile-menu-button"
-          class="fixed bottom-6 right-6 z-50 bg-white shadow-lg rounded-full p-3 text-indigo-600 focus:outline-none md:static md:bg-transparent md:shadow-none md:rounded-none md:p-0"
+          class="fixed bottom-6 right-6 z-50 bg-gray-50 shadow-lg rounded-full p-3 text-primary-teal focus:outline-none md:static md:bg-transparent md:shadow-none md:rounded-none md:p-0"
         >
           <!-- Menu Icon (hamburger) -->
           <svg
@@ -62,7 +62,7 @@
       <a href="#" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >Home</a
       >
-      <a href="/about_us" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
+      <a href="#about-us" class="py-2 text-gray-700 hover:text-teal-600 font-medium"
         >About Us</a
       >
       <a
@@ -82,9 +82,9 @@
         {% endfor %}
       </div>
     {% endif %}
-    <section class="flex-col my-32">
+    <section class="flex-col my-[412px]">
       <div class="flex-row">
-        <h1 class="text-4xl sm:text-9xl font-bold text-left text-teal-600 mb-6">
+        <h1 class="text-4xl lg:text-9xl font-bold text-left text-teal-600 mb-6">
           Welcome to Examind
         </h1>
         <p class="text-lg text-gray-600 text-left mb-10">
@@ -97,14 +97,13 @@
         >
       </div>
     </section>
-    <section class="my-32" id="about-us">
-      <div class="flex flex-col items-center">
-        <h2 class="text-2xl font-bold text-teal-700 mb-6">Tentang Examind</h2>
-        <div class="max-w-4xl text-center">
-          <div class="text-gray-600 text-justify">
+    <section class="my-64" id="about-us">
+      <div class="flex flex-col md:flex-row md:justify-center md:items-stretch gap-6">
+        <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
+          <h2 class="text-4xl font-bold text-teal-700 md:text-left mb-2">Tentang Developer</h2>
+          <div class="text-gray-600 text-justify text-xl">
             <p>
-ExaMind adalah solusi ujian online (Computer Based Test) yang menghadirkan pengalaman evaluasi digital yang modern dan efisien. Platform ini dirancang khusus untuk memenuhi kebutuhan institusi pendidikan, perusahaan, dan organisasi dalam menyelenggarakan ujian yang aman, akurat, dan mudah dikelola.
-Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan administrator untuk membuat soal dan menilai jawaban peserta dengan mudah. Peserta ujian dapat mengakses tes dengan mudah dari berbagai perangkat, didukung sistem keamanan yang kuat guna menjamin integritas ujian.
+              Kami merupakan tim pengembang yang terdiri dari lima orang yang berdedikasi untuk menciptakan platform ujian online yang inovatif dan mudah digunakan. Dengan pengalaman di bidang teknologi informasi dan pendidikan, kami berkomitmen untuk menyediakan solusi yang membantu siswa dan guru dalam proses belajar mengajar.
             </p>
           </div>
         </div>
@@ -119,14 +118,14 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
             <div class="flex justify-center items-center space-x-4 mt-6 lg:hidden">
               <button id="prev-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
                 <!-- Left arrow icon -->
-                
+                
               </button>
               <span id="dev-indicator" class="text-gray-700">
                 <span id="current-dev">1</span>/<span id="total-devs">5</span>
               </span>
               <button id="next-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
                 <!-- Right arrow icon -->
-                
+                
               </button>
             </div>
           <div class="grid grid-cols-1 xl:grid-cols-5 gap-16" id="developers-grid">
@@ -138,8 +137,8 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
               </div>
               <h3 class="text-xl font-bold text-teal-600">Dinky Trady</h3>
               <a href="https://github.com/DinkyTrady" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
-              <img src="https://github.com/favicon.ico" alt="GitHub">
               </a>
+              <img src="https://github.com/favicon.ico" alt="GitHub">
             </div>
             
             <!-- Developer 2 -->
@@ -149,8 +148,8 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
               </div>
               <h3 class="text-xl font-bold text-teal-600">Aditya Febrian</h3>
               <a href="https://github.com/AdityaFebrian23" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
-              <img src="https://github.com/favicon.ico" alt="GitHub">
               </a>
+              <img src="https://github.com/favicon.ico" alt="GitHub">
             </div>
             
             <!-- Developer 3 -->
@@ -160,8 +159,8 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
               </div>
               <h3 class="text-xl font-bold text-teal-600">Driannnn</h3>
               <a href="https://github.com/Driannnn" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
-              <img src="https://github.com/favicon.ico" alt="GitHub">
               </a>
+              <img src="https://github.com/favicon.ico" alt="GitHub">
             </div>
             
             <!-- Developer 4 -->
@@ -171,8 +170,8 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
               </div>
               <h3 class="text-xl font-bold text-teal-600">Pratama DKY</h3>
               <a href="https://github.com/pratamadky" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
-              <img src="https://github.com/favicon.ico" alt="GitHub">
               </a>
+              <img src="https://github.com/favicon.ico" alt="GitHub">
             </div>
             
             <!-- Developer 5 -->
@@ -182,8 +181,8 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
               </div>
               <h3 class="text-xl font-bold text-teal-600">Rendyprobe</h3>
               <a href="https://github.com/Rendyprobe" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
-              <img src="https://github.com/favicon.ico" alt="GitHub">
               </a>
+              <img src="https://github.com/favicon.ico" alt="GitHub">
             </div>
           </div>
         </div>
@@ -229,20 +228,6 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
     }, 3000);
 
     document.addEventListener('DOMContentLoaded', function() {
-      window.addEventListener('resize', function() {
-        const developers = document.querySelectorAll('#developers-grid > div');
-        
-        if (window.innerWidth >= 1280) {
-          // On large screens, show all developers
-          developers.forEach(dev => {
-            dev.style.display = 'flex';
-          });
-        } else {
-          // On small screens, maintain the carousel behavior
-          updateDevDisplay();
-        }
-      });
-
       // Only run on mobile/small screens
       if (window.innerWidth < 1280) {
         const developers = document.querySelectorAll('#developers-grid > div');
@@ -275,6 +260,20 @@ Dengan interface yang user-friendly dan fitur terkini, ExaMind memungkinkan admi
           updateDevDisplay();
         });
       }
+
+      window.addEventListener('resize', function() {
+        const developers = document.querySelectorAll('#developers-grid > div');
+        
+        if (window.innerWidth >= 1280) {
+          // On large screens, show all developers
+          developers.forEach(dev => {
+            dev.style.display = 'flex';
+          });
+        } else {
+          // On small screens, maintain the carousel behavior
+          updateDevDisplay();
+        }
+      });
     });
   </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import login_required
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -50,8 +50,10 @@ def login_view(request: HttpRequest):
             else:
                 logout(request)
                 error = "Akun tidak terdaftar sebagai Siswa atau Guru."
+                return render(request, "login.html", {"error": error})
         else:
             error = "Username atau password salah."
+            return render(request, "login.html", {"error": error})
     else:
         return render(request, "login.html", {"error": error})
 
@@ -63,11 +65,16 @@ def logout_view(request: HttpRequest):
         logout(request)
         messages.success(
             request,
-            f"You have been successfully logged out. See you, {username}!",
+            f"You have been successfully logged out. See you later, {username}!",
         )
         return redirect("homeweb:index")
 
 
 @login_required(login_url="account:login")
 def siswa_dashboard(request: HttpRequest):
+    return render(request, "siswa/dashboard.html", {"user": request.user})
+
+
+@login_required(login_url="account:login")
+def guru_dashboard(request: HttpRequest):
     return render(request, "siswa/dashboard.html", {"user": request.user})

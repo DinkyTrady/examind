@@ -25,6 +25,10 @@
       };
     </script>
     <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100">
     {% block content %}
@@ -34,5 +38,6 @@
       // Add any custom JavaScript here
       console.log("Examind loaded successfully! 🚀");
     </script>
+    <script src="{% static 'js/script.js' %}"></script>
   </body>
 </html>

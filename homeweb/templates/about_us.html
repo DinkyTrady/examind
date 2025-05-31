@@ -31,24 +31,40 @@
             from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        
-        /* Logo styling untuk memastikan tampil dengan baik */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-        }
-        .logo-container svg {
-            width: 32px;
-            height: 32px;
-        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <nav class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-around">
+            <a href="#" class="text-2xl font-bold text-teal-600">Examind</a>
+            <div class="hidden md:flex space-x-4">
+                <a href="/" class="py-2 px-6 text-gray-700 hover:text-teal-600 font-medium">Home</a>
+                <a href="/aboutus" class="py-2 px-6 text-teal-600 hover:text-teal-700 font-medium">About Us</a>
+                <a href="/login/" class="py-2 px-6 rounded-lg border bg-teal-600 text-white hover:bg-teal-700 font-semibold transition duration-300">Login</a>
+            </div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="fixed bottom-6 right-6 z-50 bg-white shadow-lg rounded-full p-3 text-indigo-600 focus:outline-none md:static md:bg-transparent md:shadow-none md:rounded-none md:p-0">
+                    <!-- Menu Icon (hamburger) -->
+                    <svg id="menu-icon" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <!-- Close Icon (X) - hidden by default -->
+                    <svg id="close-icon" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="flex flex-col fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-40 transform translate-x-full transition-transform duration-300 md:hidden px-6 py-8">
+            <a href="/" class="py-2 text-gray-700 hover:text-teal-600 font-medium">Home</a>
+            <a href="/aboutus" class="py-2 text-teal-600 hover:text-teal-700 font-medium">About Us</a>
+            <a href="/login/" class="py-2 mt-2 rounded-lg text-center text-white bg-teal-500 hover:bg-teal-700 font-semibold transition duration-500">Login</a>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
     <section class="bg-teal-500 text-white py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-black bg-opacity-20"></div>
@@ -137,172 +153,6 @@
         </div>
     </section>
 
-    <!-- Developer Profile Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Profil Developer</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto"></div>
-            </div>
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                    <div class="md:flex">
-                        <div class="md:w-1/3 bg-teal-500 p-8 text-white text-center">
-                            <div class="w-32 h-32 bg-white bg-opacity-20 rounded-full mx-auto mb-6 flex items-center justify-center">
-                                <i class="fas fa-user-tie text-6xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-2">Lead Developer</h3>
-                            <p class="opacity-90">Full Stack Developer</p>
-                        </div>
-                        <div class="md:w-2/3 p-8">
-                            <h4 class="text-2xl font-bold text-gray-800 mb-6">Tentang Developer</h4>
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-                                        <i class="fas fa-code text-teal-600"></i>
-                                    </div>
-                                    <div>
-                                        <strong class="text-gray-800">Teknologi:</strong>
-                                        <span class="text-gray-600 ml-2">Django, Python, JavaScript, HTML/CSS, Tailwind</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                                        <i class="fas fa-graduation-cap text-orange-600"></i>
-                                    </div>
-                                    <div>
-                                        <strong class="text-gray-800">Spesialisasi:</strong>
-                                        <span class="text-gray-600 ml-2">Web Development, Educational Technology, Database Design</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center mr-4">
-                                        <i class="fas fa-heart text-teal-600"></i>
-                                    </div>
-                                    <div>
-                                        <strong class="text-gray-800">Passion:</strong>
-                                        <span class="text-gray-600 ml-2">Transformasi Digital Pendidikan Indonesia</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                                        <i class="fas fa-trophy text-orange-600"></i>
-                                    </div>
-                                    <div>
-                                        <strong class="text-gray-800">Pengalaman:</strong>
-                                        <span class="text-gray-600 ml-2">5+ tahun dalam pengembangan web dan sistem edukasi</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-8 p-4 bg-gray-50 rounded-lg">
-                                <p class="text-gray-700 italic">
-                                    "Saya percaya bahwa teknologi dapat membantu meningkatkan kualitas pendidikan. Examind adalah wujud komitmen saya untuk memberikan kontribusi nyata bagi dunia pendidikan Indonesia melalui solusi CBT yang mudah digunakan dan dapat diandalkan."
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Roadmap Pengembangan</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                    Rencana pengembangan Examind untuk memberikan pengalaman yang lebih baik
-                </p>
-            </div>
-            <div class="max-w-4xl mx-auto">
-                <div class="relative">
-                    <!-- Timeline Line -->
-                    <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-teal-500"></div>
-                    
-                    <div class="space-y-8">
-                        <!-- Phase 1 -->
-                        <div class="relative flex items-start roadmap-item">
-                            <div class="absolute left-6 w-4 h-4 bg-teal-500 rounded-full border-4 border-white shadow-md"></div>
-                            <div class="ml-16 bg-white p-6 rounded-xl shadow-lg card-hover border-l-4 border-teal-500">
-                                <div class="flex items-center mb-3">
-                                    <span class="bg-teal-100 text-teal-800 text-sm font-semibold px-3 py-1 rounded-full mr-3">
-                                        Q2 2025
-                                    </span>
-                                    <h3 class="text-xl font-bold text-gray-800">Phase 1: Core Enhancement</h3>
-                                </div>
-                                <ul class="text-gray-600 space-y-2">
-                                    <li class="flex items-center"><i class="fas fa-check text-orange-500 mr-2"></i> Optimasi performa sistem dan database</li>
-                                    <li class="flex items-center"><i class="fas fa-check text-orange-500 mr-2"></i> Peningkatan keamanan dan enkripsi data</li>
-                                    <li class="flex items-center"><i class="fas fa-check text-orange-500 mr-2"></i> Mobile responsive improvements</li>
-                                    <li class="flex items-center"><i class="fas fa-check text-orange-500 mr-2"></i> Real-time monitoring sistem</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Phase 2 -->
-                        <div class="relative flex items-start roadmap-item">
-                            <div class="absolute left-6 w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow-md"></div>
-                            <div class="ml-16 bg-white p-6 rounded-xl shadow-lg card-hover border-l-4 border-orange-500">
-                                <div class="flex items-center mb-3">
-                                    <span class="bg-orange-100 text-orange-800 text-sm font-semibold px-3 py-1 rounded-full mr-3">
-                                        Q3 2025
-                                    </span>
-                                    <h3 class="text-xl font-bold text-gray-800">Phase 2: Advanced Features</h3>
-                                </div>
-                                <ul class="text-gray-600 space-y-2">
-                                    <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-teal-500 mr-2"></i> Coming Soon</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Phase 3 -->
-                        <div class="relative flex items-start roadmap-item">
-                            <div class="absolute left-6 w-4 h-4 bg-teal-500 rounded-full border-4 border-white shadow-md"></div>
-                            <div class="ml-16 bg-white p-6 rounded-xl shadow-lg card-hover border-l-4 border-teal-500">
-                                <div class="flex items-center mb-3">
-                                    <span class="bg-teal-100 text-teal-800 text-sm font-semibold px-3 py-1 rounded-full mr-3">
-                                        Q4 2025
-                                    </span>
-                                    <h3 class="text-xl font-bold text-gray-800">Phase 3: Integration & Scale</h3>
-                                </div>
-                                <ul class="text-gray-600 space-y-2">
-                                    <li class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-clock text-orange-500 mr-2"></i> Coming Soon</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Phase 4 -->
-                        <div class="relative flex items-start roadmap-item">
-                            <div class="absolute left-6 w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow-md"></div>
-                            <div class="ml-16 bg-white p-6 rounded-xl shadow-lg card-hover border-l-4 border-orange-500">
-                                <div class="flex items-center mb-3">
-                                    <span class="bg-orange-100 text-orange-800 text-sm font-semibold px-3 py-1 rounded-full mr-3">
-                                        Q1 2026
-                                    </span>
-                                    <h3 class="text-xl font-bold text-gray-800">Phase 4: Innovation & AI</h3>
-                                </div>
-                                <ul class="text-gray-600 space-y-2">
-                                    <li class="flex items-center"><i class="fas fa-star text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-star text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-star text-teal-500 mr-2"></i> Coming Soon</li>
-                                    <li class="flex items-center"><i class="fas fa-star text-teal-500 mr-2"></i> Coming Soon</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section class="py-20 bg-black text-white relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
@@ -313,38 +163,21 @@
                     Ada pertanyaan atau ingin berkolaborasi? Kami siap membantu!
                 </p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div class="text-center glass-effect p-6 rounded-xl card-hover">
-                    <div class="logo-container bg-teal-500">
-                        <!-- Gmail Logo SVG -->
-                        <svg viewBox="0 0 24 24" fill="currentColor" class="text-white">
-                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Email</h3>
-                    <p class="opacity-90">1akunkhusus1@gmail.com</p>
-                    <p class="opacity-90">kirim email ke kami</p>
-                </div>
-                <div class="text-center glass-effect p-6 rounded-xl card-hover">
-                    <div class="logo-container bg-green-500">
-                        <!-- WhatsApp Logo SVG -->
-                        <svg viewBox="0 0 24 24" fill="currentColor" class="text-white">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.570-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
-                        </svg>
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-whatsapp text-2xl text-white"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">WhatsApp</h3>
-                    <p class="opacity-90">+62 812 3432 9998</p>
+                    <p class="opacity-90">+62 85-645-162-734-</p>
                     <p class="text-sm opacity-75">Chat dengan tim support</p>
                 </div>
                 <div class="text-center glass-effect p-6 rounded-xl card-hover">
-                    <div class="logo-container bg-gray-800">
-                        <!-- GitHub Logo SVG -->
-                        <svg viewBox="0 0 24 24" fill="currentColor" class="text-white">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
+                    <div class="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-github text-2xl text-white"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">GitHub</h3>
-                    <p class="opacity-90">github.com/examind</p>
+                    <p class="opacity-90">https://github.com/DinkyTrady/examind</p>
                     <p class="text-sm opacity-75">Open source projects</p>
                 </div>
             </div>
@@ -362,17 +195,81 @@
                     <h3 class="text-2xl font-bold">Examind</h3>
                 </div>
                 <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
-                    Platform CBT Modern untuk Transformasi Digital Pendidikan Indonesia. 
-                    Dikembangkan dengan <span class="text-orange-500">❤️</span> untuk kemajuan pendidikan.
+                   @KELOMPOK 2
                 </p>
-                <div class="border-t border-gray-800 pt-6">
-                    <p class="text-gray-500">&copy; 2025 Examind. All rights reserved. Made with Django & Tailwind CSS.</p>
-                </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const menuNav = document.getElementById('mobile-menu');
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        menuBtn.addEventListener('click', () => {
+            if (menuNav.classList.contains('translate-x-full')) {
+                menuNav.classList.remove('translate-x-full');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menuNav.classList.add('translate-x-full');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
+
+        // Developer carousel for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('resize', function() {
+                const developers = document.querySelectorAll('#developers-grid > div');
+                
+                if (window.innerWidth >= 1280) {
+                    // On large screens, show all developers
+                    developers.forEach(dev => {
+                        dev.style.display = 'flex';
+                    });
+                } else {
+                    // On small screens, maintain the carousel behavior
+                    updateDevDisplay();
+                }
+            });
+
+            // Only run on mobile/small screens
+            if (window.innerWidth < 1280) {
+                const developers = document.querySelectorAll('#developers-grid > div');
+                const prevBtn = document.getElementById('prev-dev');
+                const nextBtn = document.getElementById('next-dev');
+                const currentDevElement = document.getElementById('current-dev');
+                const totalDevs = developers.length;
+                let currentIndex = 0;
+                
+                // Initialize: hide all developers except the first one
+                function updateDevDisplay() {
+                    developers.forEach((dev, index) => {
+                        dev.style.display = index === currentIndex ? 'flex' : 'none';
+                    });
+                    currentDevElement.textContent = currentIndex + 1;
+                }
+                
+                // Initial setup
+                updateDevDisplay();
+                
+                // Previous button click
+                prevBtn.addEventListener('click', function() {
+                    currentIndex = (currentIndex - 1 + totalDevs) % totalDevs;
+                    updateDevDisplay();
+                });
+                
+                // Next button click
+                nextBtn.addEventListener('click', function() {
+                    currentIndex = (currentIndex + 1) % totalDevs;
+                    updateDevDisplay();
+                });
+            }
+        });
+
         // Smooth scrolling animation
         document.addEventListener('DOMContentLoaded', function() {
             // Add smooth reveal animations
@@ -398,3 +295,11 @@
             window.addEventListener('scroll', function() {
                 const scrolled = window.pageYOffset;
                 const hero = document.querySelector('.bg-teal-500');
+                if (hero) {
+                    hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

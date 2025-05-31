@@ -1,0 +1,8 @@
+.modal-backdrop {
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop[style*="display: none"] {
+  opacity: 0;
+  pointer-events: none;
+}

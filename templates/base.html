@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="id">
   <head>
@@ -23,11 +24,7 @@
         },
       };
     </script>
-    <style>
-      body {
-        background-color: #eff1f5;
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
   </head>
   <body class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100">
     {% block content %}

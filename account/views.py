@@ -62,11 +62,11 @@ def login_view(request: HttpRequest):
 @login_required(login_url="account:login")
 def logout_view(request: HttpRequest):
     if request.method == "POST":
-        username = request.user.username
+        full_name = request.user.full_name
         logout(request)
         messages.success(
             request,
-            f"You have been successfully logged out. See you later, {username}!",
+            f"You have been successfully logged out. See you later, {full_name}!",
         )
         return redirect("homeweb:index")
 

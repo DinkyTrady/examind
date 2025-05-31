@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// use for redirect warning
 function closeModal(id) {
   const modal = document.getElementById(id);
   if (modal) {
@@ -114,4 +115,18 @@ window.addEventListener("DOMContentLoaded", () => {
       closeModal("errorModal");
     }, 3000);
   }
+});
+
+// logout confirmation modal
+const logoutBtn = document.getElementById("logout-btn");
+const logoutModal = document.getElementById("logout-modal");
+const cancelLogout = document.getElementById("cancel-logout");
+
+logoutBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  logoutModal.classList.remove("hidden");
+});
+
+cancelLogout.addEventListener("click", function () {
+  logoutModal.classList.add("hidden");
 });

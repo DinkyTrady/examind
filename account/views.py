@@ -111,16 +111,3 @@ def user_profile(request: HttpRequest):
         request.user.save()
 
     return render(request, "profile.html", {"user": request.user})
-
-
-@login_required(login_url="account:login")
-def user_report(request: HttpRequest):
-    if request.user.role == "siswa":
-        messages.info(request, "This feature is under development.")
-        return redirect("account:siswa_dashboard")
-    elif request.user.role == "guru":
-        messages.info(request, "This feature is under development.")
-        return redirect("account:guru_dashboard")
-    else:
-        messages.error(request, "Akun tidak terdaftar sebagai Siswa atau Guru.")
-        return redirect("account:login_view")

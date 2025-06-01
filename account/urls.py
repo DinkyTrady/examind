@@ -11,9 +11,7 @@ urlpatterns = [
     # siswa
     path("siswa/dashboard/", views.siswa_dashboard, name="siswa_dashboard"),
     path("siswa/settings/", views.user_profile, name="user_profile"),
-    path("siswa/report/", views.user_report, name="user_report"),
     # guru
     path("guru/dashboard/", views.guru_dashboard, name="guru_dashboard"),
     path("guru/settings/", views.user_profile, name="user_profile"),
-    path("guru/report/", views.user_report, name="user_report"),
 ]

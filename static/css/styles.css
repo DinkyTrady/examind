@@ -28,8 +28,24 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .animate-fade-in {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0.8s ease-in forwards;
 }
+
+.animate-fade-out {
+  animation: fadeOutDown 0.8s ease-out forwards;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;

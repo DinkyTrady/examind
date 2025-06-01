@@ -1,17 +1,28 @@
 // Smooth scrolling animation
 document.addEventListener("DOMContentLoaded", function () {
-  // Add smooth reveal animations
+  // Add smooth reveal animations with scroll direction tracking
+  let lastScrollY = window.pageYOffset;
+
   const observerOptions = {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
   };
 
   const observer = new IntersectionObserver(function (entries) {
+    const currentScrollY = window.pageYOffset;
+    const isScrollingUp = currentScrollY < lastScrollY;
+
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
+        entry.target.classList.remove("animate-fade-out");
         entry.target.classList.add("animate-fade-in");
+      } else if (isScrollingUp) {
+        entry.target.classList.remove("animate-fade-in");
+        entry.target.classList.add("animate-fade-out");
       }
     });
+
+    lastScrollY = currentScrollY;
   }, observerOptions);
 
   // Observe all sections
@@ -124,14 +135,23 @@ window.addEventListener("DOMContentLoaded", () => {
 // logout confirmation modal
 document.addEventListener("DOMContentLoaded", function () {
   const logoutBtn = document.getElementById("logout-btn");
+  const logoutBtnMobile = document.getElementById("logout-btn-mobile");
   const logoutModal = document.getElementById("logout-modal");
   const cancelLogout = document.getElementById("cancel-logout");
 
-  if (logoutBtn && logoutModal && cancelLogout) {
+  if (logoutBtn && cancelLogout) {
     logoutBtn.addEventListener("click", function (e) {
       e.preventDefault();
       logoutModal.classList.remove("hidden");
     });
+
+    // Mobile logout button
+    if (logoutBtnMobile) {
+      logoutBtnMobile.addEventListener("click", function (e) {
+        e.preventDefault();
+        logoutModal.classList.remove("hidden");
+      });
+    }
 
     cancelLogout.addEventListener("click", function () {
       logoutModal.classList.add("hidden");

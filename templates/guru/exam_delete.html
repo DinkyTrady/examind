@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Hapus {{ exam.title }} - Examind{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html" %}
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100 py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-red-600 mb-2">Hapus Ujian</h1>
+            <p class="text-gray-600">Konfirmasi penghapusan ujian</p>
+        </div>
+
+        <!-- Confirmation Card -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border border-red-200">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800 mb-2">Yakin ingin menghapus ujian ini?</h2>
+                <p class="text-gray-600">Tindakan ini tidak dapat dibatalkan</p>
+            </div>
+
+            <!-- Exam Details -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <h3 class="font-bold text-gray-800 mb-2">{{ exam.title }}</h3>
+                <div class="text-sm text-gray-600 space-y-1">
+                    <p><strong>Mata Pelajaran:</strong> {{ exam.subject }}</p>
+                    <p><strong>Tanggal:</strong> {{ exam.date_start|date:"d M Y H:i" }}</p>
+                    <p><strong>Durasi:</strong> {{ exam.duration }} menit</p>
+                    <p><strong>Total Soal:</strong> {{ exam.get_total_questions }}</p>
+                </div>
+            </div>
+
+            <!-- Warning -->
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-3"></i>
+                    <div class="text-sm text-red-700">
+                        <p class="font-medium mb-1">Peringatan:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Semua soal dalam ujian ini akan ikut terhapus</li>
+                            <li>Data hasil ujian siswa akan hilang</li>
+                            <li>Tindakan ini tidak dapat dibatalkan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <form method="post" class="flex space-x-4">
+                {% csrf_token %}
+                <button type="submit" 
+                        class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200">
+                    <i class="fas fa-trash mr-2"></i>Ya, Hapus Ujian
+                </button>
+                <a href="{% url 'account:guru_exam_detail' exam.id %}" 
+                   class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-all duration-200">
+                    <i class="fas fa-arrow-left mr-2"></i>Batal
+                </a>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

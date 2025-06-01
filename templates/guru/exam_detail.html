@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ exam.title }} - Detail Ujian{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html" %}
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100 py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-primary-dark">{{ exam.title }}</h1>
+                    <p class="text-gray-600 mt-2">{{ exam.subject }}</p>
+                </div>
+                <div class="flex space-x-3">
+                    <a href="{% url 'account:guru_question_create' exam.id %}" 
+                       class="bg-primary-teal hover:bg-primary-cyan text-white font-bold py-2 px-4 rounded-lg transition-all duration-200">
+                        <i class="fas fa-plus mr-2"></i>Tambah Soal
+                    </a>
+                    <a href="{% url 'account:guru_exam_edit' exam.id %}" 
+                       class="bg-primary-orange hover:bg-primary-yellow text-white font-bold py-2 px-4 rounded-lg transition-all duration-200">
+                        <i class="fas fa-edit mr-2"></i>Edit Ujian
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Info -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-primary-cyan/20">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary-teal">{{ exam.get_total_questions }}</div>
+                    <div class="text-gray-600">Total Soal</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary-orange">{{ exam.duration }}</div>
+                    <div class="text-gray-600">Menit</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary-cyan">{{ exam.date_start|date:"d M Y" }}</div>
+                    <div class="text-gray-600">Tanggal</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary-yellow">{{ exam.date_start|date:"H:i" }}</div>
+                    <div class="text-gray-600">Waktu</div>
+                </div>
+            </div>
+            {% if exam.description %}
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <p class="text-gray-700">{{ exam.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Questions List -->
+        <div class="bg-white rounded-xl shadow-lg border border-primary-cyan/20">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-primary-dark">Daftar Soal</h2>
+            </div>
+            
+            {% if questions %}
+            <div class="divide-y divide-gray-200">
+                {% for question in questions %}
+                <div class="p-6 hover:bg-gray-50 transition-colors duration-200">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-primary-teal text-white px-3 py-1 rounded-full text-sm font-medium mr-3">
+                                    Soal {{ question.order }}
+                                </span>
+                                <span class="text-sm text-gray-600">{{ question.points }} poin</span>
+                            </div>
+                            <p class="text-gray-800 mb-3">{{ question.question_text }}</p>
+                            
+                            <div class="grid md:grid-cols-2 gap-2 text-sm">
+                                <div class="flex items-center">
+                                    <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs mr-2">A</span>
+                                    <span>{{ question.option_a }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs mr-2">B</span>
+                                    <span>{{ question.option_b }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs mr-2">C</span>
+                                    <span>{{ question.option_c }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs mr-2">D</span>
+                                    <span>{{ question.option_d }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-2 text-sm text-primary-teal">
+                                <strong>Jawaban Benar: {{ question.correct_answer }}</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-2 ml-4">
+                            <a href="{% url 'account:guru_question_edit' question.id %}" 
+                               class="bg-primary-orange hover:bg-primary-yellow text-white px-3 py-1 rounded text-sm transition-colors duration-200">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" action="{% url 'account:guru_question_delete' question.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        onclick="return confirm('Yakin ingin menghapus soal ini?')"
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors duration-200">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="p-12 text-center">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-question-circle text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-medium text-gray-600 mb-2">Belum ada soal</h3>
+                <p class="text-gray-500 mb-4">Mulai tambahkan soal untuk ujian ini</p>
+                <a href="{% url 'account:guru_question_create' exam.id %}" 
+                   class="bg-primary-teal hover:bg-primary-cyan text-white font-bold py-3 px-6 rounded-lg transition-all duration-200">
+                    <i class="fas fa-plus mr-2"></i>Tambah Soal
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-8">
+            <a href="{% url 'account:guru_exam_list' %}" 
+               class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali ke Daftar Ujian
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}

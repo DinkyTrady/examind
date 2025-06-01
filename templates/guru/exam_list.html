@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Ujian - Examind{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html" %}
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100 py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-primary-dark">Daftar Ujian</h1>
+                <a href="{% url 'account:guru_exam_create' %}" 
+                   class="bg-primary-orange hover:bg-primary-yellow text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-plus mr-2"></i>Buat Ujian Baru
+                </a>
+            </div>
+        </div>
+
+        <!-- Exams Grid -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for exam in page_obj %}
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-primary-cyan/20">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-primary-dark mb-2">{{ exam.title }}</h3>
+                        <span class="px-3 py-1 bg-primary-teal/20 text-primary-teal rounded-full text-sm font-medium">
+                            {{ exam.subject }}
+                        </span>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4 text-sm text-gray-600">
+                        <p><i class="fas fa-calendar mr-2"></i>{{ exam.date_start|date:"d M Y H:i" }}</p>
+                        <p><i class="fas fa-clock mr-2"></i>{{ exam.duration }} menit</p>
+                        <p><i class="fas fa-question-circle mr-2"></i>{{ exam.get_total_questions }} soal</p>
+                    </div>
+
+                    <div class="flex space-x-2">
+                        <a href="{% url 'account:guru_exam_detail' exam.id %}" 
+                           class="flex-1 bg-primary-teal hover:bg-primary-cyan text-white text-center py-2 px-4 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-eye mr-1"></i>Detail
+                        </a>
+                        <a href="{% url 'account:guru_exam_edit' exam.id %}" 
+                           class="flex-1 bg-primary-orange hover:bg-primary-yellow text-white text-center py-2 px-4 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-file-alt text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-medium text-gray-600 mb-2">Belum ada ujian</h3>
+                <p class="text-gray-500 mb-4">Mulai buat ujian pertama Anda</p>
+                <a href="{% url 'account:guru_exam_create' %}" 
+                   class="bg-primary-orange hover:bg-primary-yellow text-white font-bold py-3 px-6 rounded-lg transition-all duration-200">
+                    <i class="fas fa-plus mr-2"></i>Buat Ujian
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" 
+                   class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:text-gray-700">
+                    Previous
+                </a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="px-3 py-2 border border-gray-300 bg-primary-teal text-white">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}" 
+                   class="px-3 py-2 border border-gray-300 bg-white text-gray-500 hover:text-gray-700">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" 
+                   class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:text-gray-700">
+                    Next
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

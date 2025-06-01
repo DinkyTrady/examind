@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Buat Ujian - Examind{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html" %}
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100 py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-primary-dark mb-2">Buat Ujian Baru</h1>
+            <p class="text-gray-600">Isi form di bawah untuk membuat ujian baru</p>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border border-primary-cyan/20">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Title -->
+                <div>
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Judul Ujian
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.title.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Subject -->
+                <div>
+                    <label for="{{ form.subject.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Mata Pelajaran
+                    </label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.subject.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Deskripsi
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Date Start -->
+                <div>
+                    <label for="{{ form.date_start.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Tanggal & Waktu Mulai
+                    </label>
+                    {{ form.date_start }}
+                    {% if form.date_start.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.date_start.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Duration -->
+                <div>
+                    <label for="{{ form.duration.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Durasi (menit)
+                    </label>
+                    {{ form.duration }}
+                    {% if form.duration.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.duration.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-6">
+                    <button type="submit" 
+                            class="flex-1 bg-primary-orange hover:bg-primary-yellow text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-save mr-2"></i>Buat Ujian
+                    </button>
+                    <a href="{% url 'account:guru_exam_list' %}" 
+                       class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-all duration-200">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

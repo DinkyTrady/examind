@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Tambah Soal - {{ exam.title }}{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html" %}
+
+<!-- Main Content -->
+<main class="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-orange-100 py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-primary-dark mb-2">Tambah Soal</h1>
+            <p class="text-gray-600">Ujian: <strong>{{ exam.title }}</strong></p>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border border-primary-cyan/20">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Question Text -->
+                <div>
+                    <label for="{{ form.question_text.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                        Pertanyaan
+                    </label>
+                    {{ form.question_text }}
+                    {% if form.question_text.errors %}
+                        <div class="mt-1 text-red-600 text-sm">{{ form.question_text.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Options Grid -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Option A -->
+                    <div>
+                        <label for="{{ form.option_a.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Pilihan A
+                        </label>
+                        {{ form.option_a }}
+                        {% if form.option_a.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.option_a.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Option B -->
+                    <div>
+                        <label for="{{ form.option_b.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Pilihan B
+                        </label>
+                        {{ form.option_b }}
+                        {% if form.option_b.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.option_b.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Option C -->
+                    <div>
+                        <label for="{{ form.option_c.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Pilihan C
+                        </label>
+                        {{ form.option_c }}
+                        {% if form.option_c.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.option_c.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Option D -->
+                    <div>
+                        <label for="{{ form.option_d.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Pilihan D
+                        </label>
+                        {{ form.option_d }}
+                        {% if form.option_d.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.option_d.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Correct Answer and Points -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Correct Answer -->
+                    <div>
+                        <label for="{{ form.correct_answer.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Jawaban Benar
+                        </label>
+                        {{ form.correct_answer }}
+                        {% if form.correct_answer.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.correct_answer.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Points -->
+                    <div>
+                        <label for="{{ form.points.id_for_label }}" class="block text-sm font-medium text-primary-dark mb-2">
+                            Poin
+                        </label>
+                        {{ form.points }}
+                        {% if form.points.errors %}
+                            <div class="mt-1 text-red-600 text-sm">{{ form.points.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-6">
+                    <button type="submit" 
+                            class="flex-1 bg-primary-teal hover:bg-primary-cyan text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-save mr-2"></i>Simpan Soal
+                    </button>
+                    <a href="{% url 'account:guru_exam_detail' exam.id %}" 
+                       class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-all duration-200">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

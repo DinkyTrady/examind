@@ -19,8 +19,13 @@
         Dashboard
       </a>
       <a
-        href="{% url 'account:user_profile' %}"
-        class="{% if request.resolver_match.url_name == 'user_profile' %}bg-orange-500 hover:bg-orange-600 text-white{% else %}text-gray-700 hover:text-white hover:bg-orange-500{% endif %} py-2 px-6 rounded-md font-medium"
+        {% if request.user.role == 'siswa' %}
+          href="{% url 'account:siswa_profile' %}"
+          class="{% if request.resolver_match.url_name == 'siswa_profile' %}bg-orange-500 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} py-2 px-4 rounded-md font-medium"
+        {% else %}
+          href="{% url 'account:guru_profile' %}"
+          class="{% if request.resolver_match.url_name == 'guru_profile' %}bg-orange-500 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} py-2 px-4 rounded-md font-medium"
+        {% endif %}
       >
         Pengaturan
       </a>
@@ -81,7 +86,7 @@
     <a
       {% if request.user.role == 'siswa' %}
         href="{% url 'account:siswa_dashboard' %}"
-        class="{% if request.resolver_match.url_name == 'siswa_dashboard' %}bg-orange-500 hover:bg-orange-500 hover:text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
+        class="{% if request.resolver_match.url_name == 'siswa_dashboard' %}bg-orange-500 hover:bg-orange-600 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
       {% else %}
         href="{% url 'account:guru_dashboard' %}"
         class="{% if request.resolver_match.url_name == 'guru_dashboard' %}bg-orange-500 hover:bg-orange-600 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
@@ -90,8 +95,13 @@
       Dashboard
     </a>
     <a
-      href="{% url 'account:user_profile' %}"
-      class="{% if request.resolver_match.url_name == 'user_profile' %}bg-orange-500 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
+      {% if request.user.role == 'siswa' %}
+        href="{% url 'account:siswa_profile' %}"
+        class="{% if request.resolver_match.url_name == 'siswa_profile' %}bg-orange-500 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
+      {% else %}
+        href="{% url 'account:guru_profile' %}"
+        class="{% if request.resolver_match.url_name == 'guru_profile' %}bg-orange-500 text-white{% else %}hover:text-white hover:bg-orange-500{% endif %} my-2 py-2 px-4 rounded-md font-medium"
+      {% endif %}
     >
       Pengaturan
     </a>

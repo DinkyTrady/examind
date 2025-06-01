@@ -10,8 +10,8 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout_view"),
     # siswa
     path("siswa/dashboard/", views.siswa_dashboard, name="siswa_dashboard"),
-    path("siswa/settings/", views.user_profile, name="user_profile"),
+    path("siswa/settings/", views.user_profile, name="siswa_profile"),
     # guru
     path("guru/dashboard/", views.guru_dashboard, name="guru_dashboard"),
-    path("guru/settings/", views.user_profile, name="user_profile"),
+    path("guru/settings/", views.user_profile, name="guru_profile"),
 ]

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Siswa - Examind{% endblock %}
+
+{% block content %}
+<!-- Navigation -->
+{% include "nav_dashboard.html" %}
+
+{% include "warn_messages.html"%}
+
+<!-- Main Content -->
+<main class="min-h-screen flex items-center justify-center py-24">
+    <div class="px-4 sm:px-6 lg:px-8">
+        <!-- Welcome Section -->
+        <div class="mb-8 flex justify-center">
+            <div class="w-full bg-gradient-to-r from-orange-400 to-yellow-400 rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-white mb-2">
+                    Selamat datang, {{ user.full_name }}! 🎓
+                </h2>
+                <p class="text-white/90 text-lg">Sudah siap untuk menghadapi ujian?</p>
+            </div>
+        </div>
+
+        <!-- Main Action Cards -->
+        <div class="flex flex-col sm:flex-row align-center justify-evenly">
+            <div class="bg-teal-500 rounded-2xl shadow-lg p-8 m-5">
+                <!-- Ujian -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Ujian</h3>
+                </div>
+            </div>
+            <div class="bg-teal-500 rounded-2xl shadow-lg p-8 m-5">
+                <!-- Hasil -->
+                <div class="text-center">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-4 hover:bg-orange-500 transition-all duration-300 cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 bg-white/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-14 h-14 text-white" fill="white" stroke="currentColor" viewBox="0 -960 960 960">
+                              <path d="M320-480v-80h320v80H320Zm0-160v-80h320v80H320Zm-80 240h300q29 0 54 12.5t42 35.5l84 110v-558H240v400Zm0 240h442L573-303q-6-8-14.5-12.5T540-320H240v160Zm480 80H240q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80Zm-480-80v-640 640Zm0-160v-80 80Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Hasil</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

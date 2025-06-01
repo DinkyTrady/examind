@@ -3,7 +3,7 @@
 {% block title %}Login - Examind{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-cyan via-teal-400 to-cyan-50">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-dark via-primary-teal to-primary-cyan">
     <div class="max-w-md w-full space-y-8 p-8">
         <!-- Logo/Brand Section -->
         <div class="text-center">
@@ -16,9 +16,9 @@
             <form method="post" class="space-y-6">
                 {% csrf_token %}
 
-                {% if error %}
+                {% if form.errors %}
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                      <strong>Error:</strong> {{ error }}
+                        <strong>Error:</strong> Please check your username and password.
                     </div>
                 {% endif %}
 
@@ -30,7 +30,7 @@
                            name="username" 
                            id="id_username"
                            required
-                           class="w-full px-4 py-3 border border-primary-cyan/30 rounded-lg focus:ring-2 focus:ring-primary-orange focus:border-transparent transition-all duration-200 bg-white text-primary-dark placeholder-primary-dark/50 outline-none"
+                           class="w-full px-4 py-3 border border-primary-cyan/30 rounded-lg focus:ring-2 focus:ring-primary-orange focus:border-transparent transition-all duration-200 bg-white text-primary-dark placeholder-primary-dark/50"
                            placeholder="Enter your username">
                 </div>
 
@@ -42,8 +42,14 @@
                            name="password" 
                            id="id_password"
                            required
-                           class="w-full px-4 py-3 border border-primary-cyan/30 rounded-lg focus:ring-2 focus:ring-primary-orange focus:border-transparent transition-all duration-200 bg-white text-primary-dark placeholder-primary-dark/50 outline-none"
+                           class="w-full px-4 py-3 border border-primary-cyan/30 rounded-lg focus:ring-2 focus:ring-primary-orange focus:border-transparent transition-all duration-200 bg-white text-primary-dark placeholder-primary-dark/50"
                            placeholder="Enter your password">
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <a href="#" class="text-sm text-primary-teal hover:text-primary-orange transition-colors duration-200">
+                        Forgot password?
+                    </a>
                 </div>
 
                 <button type="submit" 
@@ -54,7 +60,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="text-center text-gray-50 text-sm font-medium">
+        <div class="text-center text-primary-light/60 text-sm">
             <p>&copy; 2025 Examind. Made with ❤️ for studying.</p>
         </div>
     </div>

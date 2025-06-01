@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include "nav.html" %}
+
+  <main
+    class="container min-w-full min-h-screen mx-auto px-4 lg:px-64 py-8 bg-gradient-to-br from-cyan-100 via-white to-orange-100"
+  >
+    {% if messages %}
+      <div class="message-dissapear fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow z-50">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+    <section class="flex-col my-[412px]">
+      <div class="flex-row">
+        <h1 class="text-4xl md:text-9xl font-bold text-left text-teal-600 mb-6">
+          Welcome to Examind
+        </h1>
+        <p class="text-lg text-gray-600 text-left mb-10">
+          Platform sederhana dan modern untuk ujian serta asesmen online.
+        </p>
+        <a
+          href="/login/"
+          class="py-3 px-8 bg-teal-600 text-white rounded-full hover:bg-teal-700 font-semibold shadow transition duration-300"
+          >Mulai Sekarang</a
+        >
+      </div>
+    </section>
+    <section class="my-64" id="about-us">
+      <div class="flex flex-col md:flex-row md:justify-center md:items-stretch gap-6">
+        <div class="md:w-1/2 flex flex-col justify-center rounded-lg transition">
+          <h2 class="text-4xl font-bold text-teal-700 md:text-left mb-2">Tentang Developer</h2>
+          <div class="text-gray-600 text-justify text-xl">
+            <p>
+              Kami merupakan tim pengembang yang terdiri dari lima orang yang berdedikasi untuk menciptakan platform ujian online yang inovatif dan mudah digunakan. Dengan pengalaman di bidang teknologi informasi dan pendidikan, kami berkomitmen untuk menyediakan solusi yang membantu siswa dan guru dalam proses belajar mengajar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Developer Section -->
+    <section class="my-64">
+      <div class="flex flex-col items-center">
+        <h2 class="text-2xl font-bold text-teal-700 mb-6">Developer</h2>
+        <div class="max-w-2xl text-center">
+            <!-- Mobile Navigation (Only visible on small screens) -->
+            <div class="flex justify-center items-center space-x-4 mt-6 lg:hidden">
+              <button id="prev-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
+                <!-- Left arrow icon -->
+                
+              </button>
+              <span id="dev-indicator" class="text-gray-700">
+                <span id="current-dev">1</span>/<span id="total-devs">5</span>
+              </span>
+              <button id="next-dev" class="py-2 px-4 bg-teal-500 text-white rounded-full">
+                <!-- Right arrow icon -->
+                
+              </button>
+            </div>
+          <div class="grid grid-cols-1 xl:grid-cols-5 gap-16" id="developers-grid">
+
+            <!-- Developer 1 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/DinkyTrady.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Dinky+Trady&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Dinky Trady</h3>
+              <a href="https://github.com/DinkyTrady" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              </a>
+              <i class="fab fa-github text-2xl text-black"></i>
+            </div>
+            
+            <!-- Developer 2 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/AdityaFebrian23.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Aditya+Febrian&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Aditya Febrian</h3>
+              <a href="https://github.com/AdityaFebrian23" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              </a>
+              <i class="fab fa-github text-2xl text-black"></i>
+            </div>
+            
+            <!-- Developer 3 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/Driannnn.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Driannnn&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Driannnn</h3>
+              <a href="https://github.com/Driannnn" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              </a>
+              <i class="fab fa-github text-2xl text-black"></i>
+            </div>
+            
+            <!-- Developer 4 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/pratamadky.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Pratama+DKY&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Pratama DKY</h3>
+              <a href="https://github.com/pratamadky" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              </a>
+              <i class="fab fa-github text-2xl text-black"></i>
+            </div>
+            
+            <!-- Developer 5 -->
+            <div class="flex flex-col items-center">
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 shadow-lg mb-4 overflow-hidden">
+                <img src="https://github.com/Rendyprobe.png" alt="Developer Photo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Rendyprobe&background=0D9488&color=fff'">
+              </div>
+              <h3 class="text-xl font-bold text-teal-600">Rendyprobe</h3>
+              <a href="https://github.com/Rendyprobe" target="_blank" class="text-gray-700 hover:text-teal-600 transition">
+              </a>
+              <i class="fab fa-github text-2xl text-black"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer
+    class="min-w-full min-h-[10rem] bg-gradient-to-tr from-blue-100 via-white to-orange-100 flex justify-between items-center px-8"
+  >
+    <div class="flex items-center space-x-2">
+      <a href="#" class="text-2xl font-bold text-teal-600">
+        <i class="fa-regular fa-graduation-cap text-xl font-bold text-white bg-teal-500 px-2 py-1 rounded-lg"></i>
+        Examind
+      </a>
+    </div>
+    <div>
+      <a href="https://github.com/DinkyTrady/examind" target="_blank" class="text-gray-700 hover:text-teal-600 font-medium flex items-center space-x-2">
+        <i class="fab fa-github text-2xl text-black"></i>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </footer>
+{% endblock %}

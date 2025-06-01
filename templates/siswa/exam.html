@@ -1,397 +1,438 @@
-<!-- templates/cbt/exam.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CBT - Ujian Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'orange': {
-                            500: '#f97316'
-                        },
-                        'teal': {
-                            500: '#14b8a6'
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              orange: {
+                500: "#f97316",
+              },
+              teal: {
+                500: "#14b8a6",
+              },
+            },
+          },
+        },
+      };
     </script>
-</head>
-<body class="bg-gray-50 min-h-screen">
+  </head>
+  <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-lg border-b-4 border-orange-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-4">
-                    <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold">
-                        CBT System
-                    </div>
-                    <div class="text-gray-700">
-                        <h2 class="text-lg font-semibold">{{ exam.title }}</h2>
-                        <p class="text-sm text-gray-500">{{ exam.subject }} - {{ exam.duration }} menit</p>
-                    </div>
-                </div>
-                
-                <!-- Timer -->
-                <div class="bg-red-100 text-red-800 px-4 py-2 rounded-lg border border-red-200">
-                    <div class="flex items-center space-x-2">
-                        <i class="fas fa-clock"></i>
-                        <span class="font-mono text-lg font-bold" id="timer">
-                            {{ time_remaining }}
-                        </span>
-                    </div>
-                </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-4">
+            <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold">
+              CBT System
             </div>
+            <div class="text-gray-700">
+              <h2 class="text-lg font-semibold">{{ exam.title }}</h2>
+              <p class="text-sm text-gray-500">
+                {{ exam.subject }} - {{ exam.duration }} menit
+              </p>
+            </div>
+          </div>
+
+          <!-- Timer -->
+          <div
+            class="bg-red-100 text-red-800 px-4 py-2 rounded-lg border border-red-200"
+          >
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-clock"></i>
+              <span class="font-mono text-lg font-bold" id="timer">
+                {{ time_remaining }}
+              </span>
+            </div>
+          </div>
         </div>
+      </div>
     </header>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            
-            <!-- Question Navigation Panel -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-list-ol text-teal-500 mr-2"></i>
-                        Navigasi Soal
-                    </h3>
-                    
-                    <!-- Question Grid -->
-                    <div class="grid grid-cols-5 gap-2 mb-6">
-                        {% for i in question_numbers %}
-                        <button 
-                            class="question-nav-btn w-10 h-10 rounded-lg border-2 font-semibold transition-all duration-200
-                                   {% if i == current_question_number %}
-                                       bg-orange-500 text-white border-orange-500
-                                   {% elif i in answered_questions %}
-                                       bg-teal-100 text-teal-700 border-teal-300 hover:bg-teal-200
-                                   {% else %}
-                                       bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200
-                                   {% endif %}"
-                            onclick="goToQuestion({{ i }})"
-                            data-question="{{ i }}">
-                            {{ i }}
-                        </button>
-                        {% endfor %}
-                    </div>
-                    
-                    <!-- Progress Info -->
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Dijawab:</span>
-                            <span class="font-semibold text-teal-600">{{ answered_count }}/{{ total_questions }}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Belum dijawab:</span>
-                            <span class="font-semibold text-orange-600">{{ unanswered_count }}</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-orange-500 h-2 rounded-full transition-all duration-300" 
-                                 style="width: {{ progress_percentage }}%"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Submit Button -->
-                    <button 
-                        onclick="showSubmitModal()"
-                        class="w-full mt-6 bg-orange-500 text-white py-3 px-4 rounded-lg font-semibold 
-                            hover:bg-orange-600 transition-all duration-200 transform hover:scale-105
-                            flex items-center justify-center space-x-2">
-                        <i class="fas fa-paper-plane"></i>
-                        <span>Selesai Ujian</span>
-                    </button>
-                </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Question Navigation Panel -->
+        <div class="lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+            <h3
+              class="text-lg font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <i class="fas fa-list-ol text-teal-500 mr-2"></i>
+              Navigasi Soal
+            </h3>
+
+            <!-- Question Grid -->
+            <div class="grid grid-cols-5 gap-2 mb-6">
+              {% for i in question_numbers %}
+              <button
+                class="question-nav-btn w-10 h-10 rounded-lg border-2 font-semibold transition-all duration-200 {% if i == current_question_number %} bg-orange-500 text-white border-orange-500 {% elif i in answered_questions %} bg-teal-100 text-teal-700 border-teal-300 hover:bg-teal-200 {% else %} bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200 {% endif %}"
+                onclick="goToQuestion({{ i }})"
+                data-question="{{ i }}"
+              >
+                {{ i }}
+              </button>
+              {% endfor %}
             </div>
-            
-            <!-- Main Question Area -->
-            <div class="lg:col-span-3">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    
-                    <!-- Question Header -->
-                    <div class="bg-teal-500 text-white p-6">
-                        <div class="flex justify-between items-center">
-                            <h2 class="text-xl font-bold">
-                                Soal {{ current_question_number }} dari {{ total_questions }}
-                            </h2>
-                            <div class="flex items-center space-x-2">
-                                <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
-                                    {{ current_question.question_type|title }}
-                                </span>
-                                {% if current_question.points %}
-                                <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
-                                    {{ current_question.points }} poin
-                                </span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Question Content -->
-                    <div class="p-8">
-                        <div class="mb-8">
-                            <div class="prose prose-lg max-w-none text-gray-800">
-                                {{ current_question.question_text|safe }}
-                            </div>
-                            
-                            {% if current_question.image %}
-                            <div class="mt-6">
-                                <img src="{{ current_question.image.url }}" 
-                                     alt="Gambar soal" 
-                                     class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm">
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Answer Options -->
-                        <form id="questionForm" class="space-y-4">
-                            {% csrf_token %}
-                            {% for option in current_question.options.all %}
-                            <label class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200
-                                          hover:border-orange-300 hover:bg-orange-50
-                                          {% if option.id in selected_answers %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}">
-                                <input 
-                                    type="radio" 
-                                    name="answer" 
-                                    value="{{ option.id }}"
-                                    class="mt-1 text-teal-500 focus:ring-teal-500"
-                                    {% if option.id in selected_answers %}checked{% endif %}
-                                    onchange="saveAnswer()">
-                                <div class="flex-1">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm">
-                                            {{ option.option_label }}
-                                        </span>
-                                        <span class="text-gray-800">{{ option.option_text }}</span>
-                                    </div>
-                                    {% if option.image %}
-                                    <div class="mt-3 ml-11">
-                                        <img src="{{ option.image.url }}" 
-                                             alt="Gambar pilihan" 
-                                             class="max-w-xs h-auto rounded border border-gray-200">
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </label>
-                            {% endfor %}
-                        </form>
-                    </div>
-                    
-                    <!-- Navigation Footer -->
-                    <div class="bg-gray-50 px-8 py-6 border-t border-gray-200">
-                        <div class="flex justify-between items-center">
-                            <button 
-                                onclick="previousQuestion()"
-                                {% if not has_previous %}disabled{% endif %}
-                                class="flex items-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold
-                                       hover:bg-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fas fa-chevron-left"></i>
-                                <span>Sebelumnya</span>
-                            </button>
-                            
-                            <div class="flex items-center space-x-4">
-                                <button 
-                                    onclick="markForReview()"
-                                    class="flex items-center space-x-2 px-6 py-3 bg-yellow-100 text-yellow-700 rounded-lg font-semibold
-                                           hover:bg-yellow-200 transition-all duration-200 border border-yellow-300">
-                                    <i class="fas fa-bookmark"></i>
-                                    <span>Tandai</span>
-                                </button>
-                                
-                                <button 
-                                    onclick="nextQuestion()"
-                                    {% if not has_next %}disabled{% endif %}
-                                    class="flex items-center space-x-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold
-                                         hover:bg-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span>Selanjutnya</span>
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+            <!-- Progress Info -->
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Dijawab:</span>
+                <span class="font-semibold text-teal-600"
+                  >{{ answered_count }}/{{ total_questions }}</span
+                >
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Belum dijawab:</span>
+                <span class="font-semibold text-orange-600"
+                  >{{ unanswered_count }}</span
+                >
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  class="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                  style="width: {{ progress_percentage }}%"
+                ></div>
+              </div>
             </div>
+
+            <!-- Submit Button -->
+            <button
+              onclick="showSubmitModal()"
+              class="w-full mt-6 bg-orange-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+            >
+              <i class="fas fa-paper-plane"></i>
+              <span>Selesai Ujian</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Main Question Area -->
+        <div class="lg:col-span-3">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Question Header -->
+            <div class="bg-teal-500 text-white p-6">
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold">
+                  Soal {{ current_question_number }} dari {{ total_questions }}
+                </h2>
+                <div class="flex items-center space-x-2">
+                  <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                    {{ current_question.question_type|title }}
+                  </span>
+                  {% if current_question.points %}
+                  <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                    {{ current_question.points }} poin
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Question Content -->
+            <div class="p-8">
+              <div class="mb-8">
+                <div class="prose prose-lg max-w-none text-gray-800">
+                  {{ current_question.question_text|safe }}
+                </div>
+
+                {% if current_question.image %}
+                <div class="mt-6">
+                  <img
+                    src="{{ current_question.image.url }}"
+                    alt="Gambar soal"
+                    class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm"
+                  />
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Answer Options -->
+              <form id="questionForm" class="space-y-4">
+                {% csrf_token %} {% for option in current_question.options.all
+                %}
+                <label
+                  class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 {% if option.id in selected_answers %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}"
+                >
+                  <input
+                    type="radio"
+                    name="answer"
+                    value="{{ option.id }}"
+                    class="mt-1 text-teal-500 focus:ring-teal-500"
+                    {%
+                    if
+                    option.id
+                    in
+                    selected_answers
+                    %}checked{%
+                    endif
+                    %}
+                    onchange="saveAnswer()"
+                  />
+                  <div class="flex-1">
+                    <div class="flex items-center space-x-3">
+                      <span
+                        class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm"
+                      >
+                        {{ option.option_label }}
+                      </span>
+                      <span class="text-gray-800"
+                        >{{ option.option_text }}</span
+                      >
+                    </div>
+                    {% if option.image %}
+                    <div class="mt-3 ml-11">
+                      <img
+                        src="{{ option.image.url }}"
+                        alt="Gambar pilihan"
+                        class="max-w-xs h-auto rounded border border-gray-200"
+                      />
+                    </div>
+                    {% endif %}
+                  </div>
+                </label>
+                {% endfor %}
+              </form>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="bg-gray-50 px-8 py-6 border-t border-gray-200">
+              <div class="flex justify-between items-center">
+                <button
+                  onclick="previousQuestion()"
+                  {%
+                  if
+                  not
+                  has_previous
+                  %}disabled{%
+                  endif
+                  %}
+                  class="flex items-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <i class="fas fa-chevron-left"></i>
+                  <span>Sebelumnya</span>
+                </button>
+
+                <div class="flex items-center space-x-4">
+                  <button
+                    onclick="markForReview()"
+                    class="flex items-center space-x-2 px-6 py-3 bg-yellow-100 text-yellow-700 rounded-lg font-semibold hover:bg-yellow-200 transition-all duration-200 border border-yellow-300"
+                  >
+                    <i class="fas fa-bookmark"></i>
+                    <span>Tandai</span>
+                  </button>
+
+                  <button
+                    onclick="nextQuestion()"
+                    {%
+                    if
+                    not
+                    has_next
+                    %}disabled{%
+                    endif
+                    %}
+                    class="flex items-center space-x-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span>Selanjutnya</span>
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Submit Confirmation Modal -->
-    <div id="submitModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
-        <div class="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl">
-            <div class="text-center">
-                <div class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-exclamation-triangle text-orange-500 text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Konfirmasi Selesai Ujian</h3>
-                <p class="text-gray-600 mb-6">
-                    Apakah Anda yakin ingin menyelesaikan ujian? 
-                    <br><strong>{{ unanswered_count }}</strong> soal belum dijawab.
-                </p>
-                <div class="flex space-x-4">
-                    <button 
-                        onclick="hideSubmitModal()"
-                        class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all">
-                        Batal
-                    </button>
-                    <button 
-                        onclick="submitExam()"
-                        class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold 
-                             hover:bg-orange-600 transition-all">
-                        Ya, Selesai
-                    </button>
-                </div>
-            </div>
+    <div
+      id="submitModal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center"
+    >
+      <div class="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl">
+        <div class="text-center">
+          <div
+            class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fas fa-exclamation-triangle text-orange-500 text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-4">
+            Konfirmasi Selesai Ujian
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Apakah Anda yakin ingin menyelesaikan ujian?
+            <br /><strong>{{ unanswered_count }}</strong> soal belum dijawab.
+          </p>
+          <div class="flex space-x-4">
+            <button
+              onclick="hideSubmitModal()"
+              class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+            >
+              Batal
+            </button>
+            <button
+              onclick="submitExam()"
+              class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all"
+            >
+              Ya, Selesai
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- JavaScript -->
     <script>
-        // Question navigation using array-like structure
-        const questionQueue = {{ question_ids|safe }};
-        let currentIndex = {{ current_index }};
-        const answers = {{ user_answers|safe }};
-        
-        // Timer functionality
-        let timeRemaining = {{ time_remaining_seconds }};
-        
-        function updateTimer() {
-            const hours = Math.floor(timeRemaining / 3600);
-            const minutes = Math.floor((timeRemaining % 3600) / 60);
-            const seconds = timeRemaining % 60;
-            
-            const timerElement = document.getElementById('timer');
-            timerElement.textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeRemaining <= 300) { // 5 minutes warning
-                timerElement.parentElement.className = 'bg-red-200 text-red-900 px-4 py-2 rounded-lg border border-red-300';
-            }
-            
-            if (timeRemaining <= 0) {
-                submitExam();
-                return;
-            }
-            
-            timeRemaining--;
-        }
-        
-        setInterval(updateTimer, 1000);
-        
-        // Navigation functions implementing queue/stack concepts
-        function nextQuestion() {
-            if (currentIndex < questionQueue.length - 1) {
-                saveCurrentAnswer();
-                window.location.href = `?question=${currentIndex + 2}`;
-            }
-        }
-        
-        function previousQuestion() {
-            if (currentIndex > 0) {
-                saveCurrentAnswer();
-                window.location.href = `?question=${currentIndex}`;
-            }
-        }
-        
-        function goToQuestion(questionNumber) {
-            saveCurrentAnswer();
-            window.location.href = `?question=${questionNumber}`;
-        }
-        
-        // Answer handling
-        function saveAnswer() {
-            const form = document.getElementById('questionForm');
-            const formData = new FormData(form);
-            
-            fetch("{% url 'core:save_answer' %}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateQuestionNavigation();
-                }
-            });
-        }
-        
-        function saveCurrentAnswer() {
-            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-            if (selectedAnswer) {
-                saveAnswer();
-            }
-        }
-        
-        function markForReview() {
-            // Implementation for marking question for review
-            fetch('{% url "core:mark_review" %}', {
-                method: 'POST',
-                body: JSON.stringify({
-                    question_id: {{ current_question.id }},
-                    mark: true
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                }
-            });
-        }
-        
-        function updateQuestionNavigation() {
-            // Update navigation button colors based on answered status
-            const answeredQuestions = Object.keys(answers);
-            document.querySelectorAll('.question-nav-btn').forEach(btn => {
-                const questionNum = btn.dataset.question;
-                if (answeredQuestions.includes(questionNum)) {
-                    btn.className = btn.className.replace('bg-gray-100 text-gray-600 border-gray-300', 
-                                                        'bg-teal-100 text-teal-700 border-teal-300');
-                }
-            });
-        }
-        
-        // Modal functions
-        function showSubmitModal() {
-            document.getElementById('submitModal').classList.remove('hidden');
-            document.getElementById('submitModal').classList.add('flex');
-        }
-        
-        function hideSubmitModal() {
-            document.getElementById('submitModal').classList.add('hidden');
-            document.getElementById('submitModal').classList.remove('flex');
-        }
-        
-        function submitExam() {
-            saveCurrentAnswer();
-            
-            fetch('{% url "core:submit_exam" %}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '{% url "core:exam_result" exam_id %}';
-                }
-            });
-        }
-        
-        // Auto-save functionality
-        setInterval(saveCurrentAnswer, 30000); // Auto-save every 30 seconds
-        
-        // Prevent page refresh/back button
-        window.addEventListener('beforeunload', function(e) {
-            saveCurrentAnswer();
-            e.preventDefault();
-            e.returnValue = '';
-        });
+      // Question navigation using array-like structure
+      const questionQueue = {{ question_ids|safe }};
+      let currentIndex = {{ current_index }};
+      const answers = {{ user_answers|safe }};
+
+      // Timer functionality
+      let timeRemaining = {{ time_remaining_seconds }};
+
+      function updateTimer() {
+          const hours = Math.floor(timeRemaining / 3600);
+          const minutes = Math.floor((timeRemaining % 3600) / 60);
+          const seconds = timeRemaining % 60;
+
+          const timerElement = document.getElementById('timer');
+          timerElement.textContent =
+              `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+          if (timeRemaining <= 300) { // 5 minutes warning
+              timerElement.parentElement.className = 'bg-red-200 text-red-900 px-4 py-2 rounded-lg border border-red-300';
+          }
+
+          if (timeRemaining <= 0) {
+              submitExam();
+              return;
+          }
+
+          timeRemaining--;
+      }
+
+      setInterval(updateTimer, 1000);
+
+      // Navigation functions implementing queue/stack concepts
+      function nextQuestion() {
+          if (currentIndex < questionQueue.length - 1) {
+              saveCurrentAnswer();
+              window.location.href = `?question=${currentIndex + 2}`;
+          }
+      }
+
+      function previousQuestion() {
+          if (currentIndex > 0) {
+              saveCurrentAnswer();
+              window.location.href = `?question=${currentIndex}`;
+          }
+      }
+
+      function goToQuestion(questionNumber) {
+          saveCurrentAnswer();
+          window.location.href = `?question=${questionNumber}`;
+      }
+
+      // Answer handling
+      function saveAnswer() {
+          const form = document.getElementById('questionForm');
+          const formData = new FormData(form);
+
+          fetch("{% url 'cbt:save_answer' %}", {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  updateQuestionNavigation();
+              }
+          });
+      }
+
+      function saveCurrentAnswer() {
+          const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+          if (selectedAnswer) {
+              saveAnswer();
+          }
+      }
+
+      function markForReview() {
+          // Implementation for marking question for review
+          fetch('{% url "cbt:mark_review" %}', {
+              method: 'POST',
+              body: JSON.stringify({
+                  question_id: {{ current_question.id }},
+                  mark: true
+              }),
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+          });
+      }
+
+      function updateQuestionNavigation() {
+          // Update navigation button colors based on answered status
+          const answeredQuestions = Object.keys(answers);
+          document.querySelectorAll('.question-nav-btn').forEach(btn => {
+              const questionNum = btn.dataset.question;
+              if (answeredQuestions.includes(questionNum)) {
+                  btn.className = btn.className.replace('bg-gray-100 text-gray-600 border-gray-300',
+                                                      'bg-teal-100 text-teal-700 border-teal-300');
+              }
+          });
+      }
+
+      // Modal functions
+      function showSubmitModal() {
+          document.getElementById('submitModal').classList.remove('hidden');
+          document.getElementById('submitModal').classList.add('flex');
+      }
+
+      function hideSubmitModal() {
+          document.getElementById('submitModal').classList.add('hidden');
+          document.getElementById('submitModal').classList.remove('flex');
+      }
+
+      function submitExam() {
+          saveCurrentAnswer();
+          fetch('{% url "cbt:submit_exam" %}', {
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+          })
+          .then(response => {
+              if (response.ok) {
+                  window.location.href = '{% url "cbt:exam_result" exam_id %}';
+              }
+          });
+      }
+
+      // Auto-save functionality
+      setInterval(saveCurrentAnswer, 30000); // Auto-save every 30 seconds
+
+      // Prevent page refresh/back button
+      window.addEventListener('beforeunload', function(e) {
+          saveCurrentAnswer();
+          e.preventDefault();
+          e.returnValue = '';
+      });
     </script>
-</body>
+  </body>
 </html>
+

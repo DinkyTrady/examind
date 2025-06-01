@@ -4,12 +4,7 @@
 ![Django](https://img.shields.io/badge/Django-4.2+-green?style=for-the-badge&logo=django)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.0+-blue?style=for-the-badge&logo=tailwindcss)
 
-> [!WARNING]
-> this project is moving project to the [refactor](https://github.com/DinkyTrady/examind/tree/refactor) branch, since we decide to made it more modular between apps.
-
 **Examind** adalah platform pembelajaran interaktif yang dirancang untuk membantu siswa dan mahasiswa dalam proses belajar.
-
-<!-- melalui sistem flashcard digital, kuis, dan tracking progress yang comprehensive. -->
 
 ## 🚀 Fitur Utama
 
@@ -114,57 +109,6 @@ Gunakan akun superuser yang telah dibuat saat instalasi.
 - `/logout/` - Logout
 - `/admin/` - Panel admin Django
 
-## 📁 Struktur Project
-
-```
-examind/
-├── 📁 examind/                 # Main project settings
-│   ├── __init__.py
-│   ├── settings.py             # Konfigurasi Django
-│   ├── urls.py                 # URL routing utama
-│   └── wsgi.py
-├── 📁 core/                    # Main application
-│   ├── migrations/
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py               # Database models
-│   ├── tests.py
-│   ├── urls.py                 # App URL patterns
-│   └── views.py                # View functions
-├── 📁 templates/               # HTML templates
-│   ├── base.html               # Base template
-│   ├── home.html               # Homepage
-│   ├── dashboard.html          # Dashboard
-│   ├── login.html              # Login page
-│   ├── logout.html             # Logout page
-│   └── ...                     # File html lain
-├── 📁 static/                  # Static files
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── 📁 venv/                    # Virtual environment
-├── .gitignore                  # Git ignore rules
-├── manage.py                   # Django management
-├── requirements.txt            # Dependencies
-├── README.md                   # Dokumentasi
-```
-
-## 🧪 Testing
-
-Jalankan test suite:
-
-```bash
-# Jalankan semua tests
-python manage.py test
-
-# Test specific app
-python manage.py test core
-
-# Test dengan verbose output
-python manage.py test --verbosity=2
-```
-
 ## 🐛 Troubleshooting
 
 ### Error Umum & Solusi
@@ -184,17 +128,17 @@ pip install -r requirements.txt
 python manage.py runserver 8001
 ```
 
-<!-- #### 3. Database error -->
-<!---->
-<!-- ```bash -->
-<!-- # Reset database -->
-<!-- rm db.sqlite3 -->
-<!-- python manage.py makemigrations -->
-<!-- python manage.py migrate -->
-<!-- python manage.py createsuperuser -->
-<!-- ``` -->
+#### 3. Database error
 
-#### 3. Static files tidak muncul
+```bash
+# Reset database
+rm db.sqlite3
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+#### 4. Static files tidak muncul
 
 ```bash
 # Collect static files

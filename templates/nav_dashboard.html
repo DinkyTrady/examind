@@ -1,0 +1,74 @@
+<nav class="bg-white shadow-lg fixed top-0 left-0 w-full z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <h1 class="text-2xl font-bold text-teal-600">Examind</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-1">
+        <a
+          {% if request.user.role == 'siswa' %}
+            href="{% url 'account:siswa_dashboard' %}"
+            class="{% if request.resolver_match.url_name == 'siswa_dashboard' %}bg-orange-500 text-white{% else %}text-gray-700 hover:bg-orange-500 hover:text-white{% endif %} px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+          {% else %}
+            href="{% url 'account:guru_dashboard' %}"
+            class="{% if request.resolver_match.url_name == 'guru_dashboard' %}bg-orange-500 text-white{% else %}text-gray-700 hover:bg-orange-500 hover:text-white{% endif %} px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+          {% endif %}
+        >
+          Dashboard
+        </a>
+        <a
+          href="{% url 'account:user_profile' %}"
+          class="{% if request.resolver_match.url_name == 'user_profile' %}bg-orange-500 text-white{% else %}text-gray-700 hover:bg-orange-500 hover:text-white{% endif %} px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+        >
+          Pengaturan
+        </a>
+      </div>
+
+      <!-- User Menu -->
+      <div class="flex items-center space-x-4">
+        <span class="text-gray-700 text-sm">Welcome, {{ user.full_name }}!</span>
+        <form
+          method="post"
+          action="{% url 'account:logout_view' %}"
+          class="inline"
+        >
+          {% csrf_token %}
+          <button
+            type="button"
+            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            id="logout-btn"
+          >
+            Logout
+          </button>
+          <!-- Modal -->
+          <div
+            id="logout-modal"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
+          >
+            <div class="bg-white p-6 rounded shadow-md text-center">
+              <p class="mb-4">Apakah anda yakin ingin keluar?</p>
+              <div class="flex justify-evenly">
+                <button
+                  type="button"
+                  class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                  id="cancel-logout"
+                >
+                  Tidak
+                </button>
+                <button
+                  type="submit"
+                  class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Keluar
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>

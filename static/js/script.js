@@ -66,33 +66,48 @@ document.addEventListener("DOMContentLoaded", function () {
 /* change devs in homepage */
 // Developer carousel for mobile
 document.addEventListener("DOMContentLoaded", function () {
-  // Only run on mobile/small screens
-  if (window.innerWidth < 1280) {
-    const developers = document.querySelectorAll("#developers-grid > div");
-    const prevBtn = document.getElementById("prev-dev");
-    const nextBtn = document.getElementById("next-dev");
-    const currentDevElement = document.getElementById("current-dev");
-    const totalDevs = developers.length;
-    let currentIndex = 0;
+  const developers = document.querySelectorAll("#developers-grid > div");
+  const prevBtn = document.getElementById("prev-dev");
+  const nextBtn = document.getElementById("next-dev");
+  const currentDevElement = document.getElementById("current-dev");
+  const totalDevs = developers.length;
+  let currentIndex = 0;
 
-    // Initialize: hide all developers except the first one
-    function updateDevDisplay() {
-      developers.forEach((dev, index) => {
-        dev.style.display = index === currentIndex ? "flex" : "none";
-      });
+  // Initialize: hide all developers except the first one
+  function updateDevDisplay() {
+    developers.forEach((dev, index) => {
+      dev.style.display = index === currentIndex ? "flex" : "none";
+    });
+    if (currentDevElement) {
       currentDevElement.textContent = currentIndex + 1;
     }
+  }
 
-    // Initial setup
-    updateDevDisplay();
+  function initializeDisplay() {
+    if (window.innerWidth < 1280) {
+      // On small screens, show carousel
+      updateDevDisplay();
+    } else {
+      // On large screens, show all developers
+      developers.forEach((dev) => {
+        dev.style.display = "flex";
+      });
+    }
+  }
 
-    // Previous button click
+  // Initial setup
+  initializeDisplay();
+
+  // Previous button click
+  if (prevBtn) {
     prevBtn.addEventListener("click", function () {
       currentIndex = (currentIndex - 1 + totalDevs) % totalDevs;
       updateDevDisplay();
     });
+  }
 
-    // Next button click
+  // Next button click
+  if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       currentIndex = (currentIndex + 1) % totalDevs;
       updateDevDisplay();
@@ -100,17 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   window.addEventListener("resize", function () {
-    const developers = document.querySelectorAll("#developers-grid > div");
-
-    if (window.innerWidth >= 1280) {
-      // On large screens, show all developers
-      developers.forEach((dev) => {
-        dev.style.display = "flex";
-      });
-    } else {
-      // On small screens, maintain the carousel behavior
-      updateDevDisplay();
-    }
+    initializeDisplay();
   });
 });
 

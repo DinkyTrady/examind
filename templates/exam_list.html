@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "nav_dashboard.html" %}
+
+<main class="container mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Daftar Ujian</h1>
+      <div class="flex space-x-2">
+        <button onclick="sortExams('title')" class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200">
+          Sort by Title
+        </button>
+        <button onclick="sortExams('date')" class="px-3 py-1 bg-green-100 text-green-700 rounded text-sm hover:bg-green-200">
+          Sort by Date
+        </button>
+        <button onclick="sortExams('difficulty')" class="px-3 py-1 bg-orange-100 text-orange-700 rounded text-sm hover:bg-orange-200">
+          Sort by Difficulty
+        </button>
+      </div>
+    </div>
+    
+    {% if exams %}
+      <!-- Statistics Dashboard -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h3 class="text-sm font-medium text-blue-600">Total Exams</h3>
+          <p class="text-2xl font-bold text-blue-800" id="total-exams">{{ exams|length }}</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+          <h3 class="text-sm font-medium text-green-600">Total Questions</h3>
+          <p class="text-2xl font-bold text-green-800" id="total-questions">0</p>
+        </div>
+        <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+          <h3 class="text-sm font-medium text-orange-600">Avg Duration</h3>
+          <p class="text-2xl font-bold text-orange-800" id="avg-duration">0 min</p>
+        </div>
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <h3 class="text-sm font-medium text-purple-600">Subjects</h3>
+          <p class="text-2xl font-bold text-purple-800" id="subject-count">0</p>
+        </div>
+      </div>
+
+      <!-- Exam Grid -->
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="exam-grid">
+        {% for exam in exams %}
+        <div class="exam-card border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 hover:border-blue-300"
+             data-title="{{ exam.title|lower }}"
+             data-date="{{ exam.created_at|date:'Y-m-d' }}"
+             data-difficulty="{{ exam.get_total_points }}"
+             data-subject="{{ exam.subject|lower }}">
+          
+          <!-- Exam Header -->
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex-1">
+              <h3 class="font-bold text-xl text-gray-800 mb-2">{{ exam.title }}</h3>
+              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                {{ exam.subject }}
+              </span>
+            </div>
+            <div class="text-right">
+              {% if exam.date_start %}
+                <div class="text-xs text-gray-500">
+                  {{ exam.date_start|date:"d M Y" }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Exam Stats -->
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-gray-50 p-3 rounded">
+              <div class="text-xs text-gray-500 mb-1">Duration</div>
+              <div class="font-semibold text-gray-800">{{ exam.duration }} min</div>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+              <div class="text-xs text-gray-500 mb-1">Questions</div>
+              <div class="font-semibold text-gray-800">{{ exam.get_total_questions }}</div>
+            </div>
+          </div>
+
+          <!-- Progress Visualization -->
+          <div class="mb-4">
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+              <span>Difficulty Score</span>
+              <span>{{ exam.get_total_points }} pts</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-gradient-to-r from-green-400 to-red-400 h-2 rounded-full" 
+                   style="width: {% widthratio exam.get_total_points 100 100 %}%"></div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          {% now "Y-m-d H:i:s" as current_time %}
+          {% if exam.date_start and exam.date_start|date:"Y-m-d H:i:s" > current_time %}
+            <!-- Exam hasn't started yet -->
+            <button disabled 
+                    class="block w-full bg-gray-400 text-gray-600 text-center py-3 rounded-lg cursor-not-allowed font-medium shadow-sm">
+              <i class="fas fa-clock mr-2"></i>
+              Belum Dimulai
+            </button>
+            <div class="mt-2 text-xs text-gray-500 text-center">
+              Mulai: {{ exam.date_start|date:"d M Y H:i" }}
+            </div>
+          {% elif exam.has_attempt %}
+            <!-- Student has already taken the exam -->
+            <button disabled 
+                    class="block w-full bg-gray-400 text-gray-600 text-center py-3 rounded-lg cursor-not-allowed font-medium shadow-sm">
+              <i class="fas fa-check-circle mr-2"></i>
+              Sudah Dikerjakan
+            </button>
+            <a href="{% url 'cbt:exam_result' exam.id %}" 
+               class="block w-full mt-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-center py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md">
+              <i class="fas fa-chart-bar mr-2"></i>
+              Lihat Hasil
+            </a>
+          {% else %}
+            <!-- Exam can be started -->
+            <a href="{% url 'cbt:exam_view' exam.id %}" 
+               class="block w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md">
+              <i class="fas fa-play-circle mr-2"></i>
+              Mulai Ujian
+            </a>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-12">
+        <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-clipboard-list text-3xl text-gray-400"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Belum Ada Ujian</h3>
+        <p class="text-gray-500">Ujian akan ditampilkan di sini ketika tersedia.</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
+
+<!-- Enhanced JavaScript with Data Structure Algorithms -->
+<script>
+// Exam data structure for efficient operations
+class ExamDataManager {
+    constructor(exams) {
+        this.exams = Array.from(document.querySelectorAll('.exam-card')).map(card => ({
+            element: card,
+            title: card.dataset.title,
+            date: card.dataset.date,
+            difficulty: parseInt(card.dataset.difficulty),
+            subject: card.dataset.subject
+        }));
+        this.originalOrder = [...this.exams];
+        this.initializeStats();
+    }
+
+    // Quick sort implementation for exam sorting
+    quickSort(arr, compareFunc, left = 0, right = arr.length - 1) {
+        if (left < right) {
+            const pivotIndex = this.partition(arr, compareFunc, left, right);
+            this.quickSort(arr, compareFunc, left, pivotIndex - 1);
+            this.quickSort(arr, compareFunc, pivotIndex + 1, right);
+        }
+        return arr;
+    }
+
+    partition(arr, compareFunc, left, right) {
+        const pivot = arr[right];
+        let i = left - 1;
+
+        for (let j = left; j < right; j++) {
+            if (compareFunc(arr[j], pivot) <= 0) {
+                i++;
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+        [arr[i + 1], arr[right]] = [arr[right], arr[i + 1]];
+        return i + 1;
+    }
+
+    sortBy(criterion) {
+        let compareFunc;
+        
+        switch(criterion) {
+            case 'title':
+                compareFunc = (a, b) => a.title.localeCompare(b.title);
+                break;
+            case 'date':
+                compareFunc = (a, b) => new Date(a.date) - new Date(b.date);
+                break;
+            case 'difficulty':
+                compareFunc = (a, b) => a.difficulty - b.difficulty;
+                break;
+            default:
+                return;
+        }
+
+        const sortedExams = this.quickSort([...this.exams], compareFunc);
+        this.renderExams(sortedExams);
+    }
+
+    renderExams(examArray) {
+        const container = document.getElementById('exam-grid');
+        container.innerHTML = '';
+        examArray.forEach(exam => container.appendChild(exam.element));
+    }
+
+    initializeStats() {
+        const totalQuestions = this.exams.reduce((sum, exam) => {
+            const questionCount = parseInt(exam.element.querySelector('.font-semibold').textContent);
+            return sum + questionCount;
+        }, 0);
+
+        const totalDuration = this.exams.reduce((sum, exam) => {
+            const duration = parseInt(exam.element.querySelectorAll('.font-semibold')[0].textContent);
+            return sum + duration;
+        }, 0);
+
+        const uniqueSubjects = new Set(this.exams.map(exam => exam.subject));
+
+        document.getElementById('total-questions').textContent = totalQuestions;
+        document.getElementById('avg-duration').textContent = 
+            this.exams.length > 0 ? Math.round(totalDuration / this.exams.length) + ' min' : '0 min';
+        document.getElementById('subject-count').textContent = uniqueSubjects.size;
+    }
+}
+
+// Initialize exam manager
+const examManager = new ExamDataManager();
+
+// Global sort function
+function sortExams(criterion) {
+    examManager.sortBy(criterion);
+    
+    // Update active button state
+    document.querySelectorAll('button[onclick^="sortExams"]').forEach(btn => {
+        btn.className = btn.className.replace(/bg-\w+-200/, 'bg-gray-100')
+                                   .replace(/text-\w+-700/, 'text-gray-600');
+    });
+    
+    event.target.className = event.target.className.replace(/bg-\w+-100/, 'bg-blue-200')
+                                                   .replace(/text-\w+-\d+/, 'text-blue-800');
+}
+
+// Search functionality with binary search
+function searchExams(query) {
+    const filteredExams = examManager.exams.filter(exam => 
+        exam.title.includes(query.toLowerCase()) || 
+        exam.subject.includes(query.toLowerCase())
+    );
+    examManager.renderExams(filteredExams);
+}
+</script>
+{% endblock %}

@@ -1,399 +1,583 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ exam.title }} - CBT System{% endblock %}
 
 {% block content %}
-
-  <body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-lg border-b-4 border-orange-500">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center space-x-4">
-            <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold">
-              CBT System
-            </div>
-            <div class="text-gray-700">
-              <h2 class="text-lg font-semibold">{{ exam.title }}</h2>
-              <p class="text-sm text-gray-500">
-                {{ exam.subject }} - {{ exam.duration }} menit
-              </p>
-            </div>
-          </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold">
+                        CBT System
+                    </div>
+                    <div class="text-gray-700">
+                        <h2 class="text-lg font-semibold">{{ exam.title }}</h2>
+                        <p class="text-sm text-gray-500">
+                            {{ exam.subject }} - {{ exam.duration }} menit
+                        </p>
+                    </div>
+                </div>
 
-          <!-- Timer -->
-          <div
-            class="bg-red-100 text-red-800 px-4 py-2 rounded-lg border border-red-200"
-          >
-            <div class="flex items-center space-x-2">
-              <i class="fas fa-clock"></i>
-              <span class="font-mono text-lg font-bold" id="timer">
-                {{ time_remaining }}
-              </span>
+                <!-- Timer -->
+                <div id="timer-container" class="bg-red-100 text-red-800 px-4 py-2 rounded-lg border border-red-200">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-clock"></i>
+                        <span class="font-mono text-lg font-bold" id="timer">
+                            {{ time_remaining }}
+                        </span>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </header>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <!-- Question Navigation Panel -->
-        <div class="lg:col-span-1">
-          <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
-            <h3
-              class="text-lg font-semibold text-gray-800 mb-4 flex items-center"
-            >
-              <i class="fas fa-list-ol text-teal-500 mr-2"></i>
-              Navigasi Soal
-            </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Question Navigation Panel -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-list-ol text-teal-500 mr-2"></i>
+                        Navigasi Soal
+                    </h3>
 
-            <!-- Question Grid -->
-            <div class="grid grid-cols-5 gap-2 mb-6">
-              {% for i in question_numbers %}
-                <button
-                  class="question-nav-btn w-10 h-10 rounded-lg border-2 font-semibold transition-all duration-200 {% if i == current_question_number %} bg-orange-500 text-white border-orange-500 {% elif i in answered_questions %} bg-teal-100 text-teal-700 border-teal-300 hover:bg-teal-200 {% else %} bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200 {% endif %}"
-                  onclick="goToQuestion({{ i }})"
-                  data-question="{{ i }}"
-                >
-                  {{ i }}
-                </button>
-              {% endfor %}
-            </div>
-
-            <!-- Progress Info -->
-            <div class="space-y-3 text-sm">
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Dijawab:</span>
-                <span class="font-semibold text-teal-600"
-                  >{{ answered_count }}/{{ total_questions }}</span
-                >
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Belum dijawab:</span>
-                <span class="font-semibold text-orange-600"
-                  >{{ unanswered_count }}</span
-                >
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  class="bg-orange-500 h-2 rounded-full transition-all duration-300"
-                  style="width: {{ progress_percentage }}%"
-                ></div>
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button
-              onclick="showSubmitModal()"
-              class="w-full mt-6 bg-orange-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
-            >
-              <i class="fas fa-paper-plane"></i>
-              <span>Selesai Ujian</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Main Question Area -->
-        <div class="lg:col-span-3">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Question Header -->
-            <div class="bg-teal-500 text-white p-6">
-              <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold">
-                  Soal {{ current_question_number }} dari {{ total_questions }}
-                </h2>
-                <div class="flex items-center space-x-2">
-                  <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    {{ current_question.question_type|title }}
-                  </span>
-                  {% if current_question.points %}
-                  <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
-                    {{ current_question.points }} poin
-                  </span>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-
-            <!-- Question Content -->
-            <div class="p-8">
-              <div class="mb-8">
-                <div class="prose prose-lg max-w-none text-gray-800">
-                  {{ current_question.question_text|safe }}
-                </div>
-
-                {% if current_question.image %}
-                <div class="mt-6">
-                  <img
-                    src="{{ current_question.image.url }}"
-                    alt="Gambar soal"
-                    class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm"
-                  />
-                </div>
-                {% endif %}
-              </div>
-
-              <!-- Answer Options -->
-              <form id="questionForm" class="space-y-4">
-                {% csrf_token %}
-                {% for option in current_question.options.all %}
-                <label
-                  class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 {% if option.id in selected_answers %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}"
-                >
-                  <input
-                    type="radio"
-                    name="answer"
-                    value="{{ option.id }}"
-                    class="mt-1 text-teal-500 focus:ring-teal-500"
-                    {% if option.id in selected_answers %}
-                      checked
-                    {% endif %}
-                    onchange="saveAnswer()"
-                  />
-                  <div class="flex-1">
-                    <div class="flex items-center space-x-3">
-                      <span
-                        class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm"
-                      >
-                        {{ option.option_label }}
-                      </span>
-                      <span class="text-gray-800"
-                        >{{ option.option_text }}</span
-                      >
+                    <!-- Question Grid -->
+                    <div class="grid grid-cols-5 gap-2 mb-6">
+                        {% for i in question_numbers %}
+                        <button
+                            class="question-nav-btn w-10 h-10 rounded-lg border-2 font-semibold transition-all duration-200 
+                            {% if i == current_question_number %}
+                                bg-orange-500 text-white border-orange-500
+                            {% elif i in answered_questions %}
+                                bg-teal-100 text-teal-700 border-teal-300 hover:bg-teal-200
+                            {% else %}
+                                bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200
+                            {% endif %}"
+                            onclick="goToQuestion({{ i }})"
+                            data-question="{{ i }}"
+                        >
+                            {{ i }}
+                        </button>
+                        {% endfor %}
                     </div>
-                    {% if option.image %}
-                    <div class="mt-3 ml-11">
-                      <img
-                        src="{{ option.image.url }}"
-                        alt="Gambar pilihan"
-                        class="max-w-xs h-auto rounded border border-gray-200"
-                      />
+
+                    <!-- Progress Info -->
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Dijawab:</span>
+                            <span class="font-semibold text-teal-600" id="answered-count">
+                                {{ answered_count }}/{{ total_questions }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Belum dijawab:</span>
+                            <span class="font-semibold text-orange-600" id="unanswered-count">
+                                {{ unanswered_count }}
+                            </span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                                id="progress-bar"
+                                class="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                                style="width: {{ progress_percentage }}%"
+                            ></div>
+                        </div>
                     </div>
-                    {% endif %}
-                  </div>
-                </label>
-                {% endfor %}
-              </form>
-            </div>
 
-            <!-- Navigation Footer -->
-            <div class="bg-gray-50 px-8 py-6 border-t border-gray-200">
-              <div class="flex justify-between items-center">
-                <button
-                  onclick="previousQuestion()"
-                  {% if not has_previous %}
-                    disabled
-                  {% endif %}
-                  class="flex items-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <i class="fas fa-chevron-left"></i>
-                  <span>Sebelumnya</span>
-                </button>
-
-                <div class="flex items-center space-x-4">
-                  <button
-                    onclick="markForReview()"
-                    class="flex items-center space-x-2 px-6 py-3 bg-yellow-100 text-yellow-700 rounded-lg font-semibold hover:bg-yellow-200 transition-all duration-200 border border-yellow-300"
-                  >
-                    <i class="fas fa-bookmark"></i>
-                    <span>Tandai</span>
-                  </button>
-
-                  <button
-                    onclick="nextQuestion()"
-                    {% if not has_next %}
-                      disabled
-                    {% endif %}
-                    class="flex items-center space-x-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <span>Selanjutnya</span>
-                    <i class="fas fa-chevron-right"></i>
-                  </button>
+                    <!-- Submit Button -->
+                    <button
+                        onclick="showSubmitModal()"
+                        class="w-full mt-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-md"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Selesaikan Ujian</span>
+                    </button>
                 </div>
-              </div>
             </div>
-          </div>
+
+            <!-- Main Question Area -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <!-- Question Header -->
+                    <div class="bg-teal-500 text-white p-6">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-bold">
+                                Soal {{ current_question_number }} dari {{ total_questions }}
+                            </h2>
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                                    {{ current_question.question_type|title }}
+                                </span>
+                                {% if current_question.points %}
+                                <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                                    {{ current_question.points }} poin
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Content -->
+                    <div class="p-8">
+                        <div class="mb-8">
+                            <div class="prose prose-lg max-w-none text-gray-800">
+                                {{ current_question.question_text|safe|linebreaksbr }}
+                            </div>
+                        </div>
+
+                        <!-- Answer Options -->
+                        <form id="questionForm" class="space-y-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="question_id" value="{{ current_question.id }}" />
+                            
+                            <!-- Option A -->
+                            <label class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 option-label {% if selected_option == 'A' %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}" data-option="A">
+                                <input
+                                    type="radio"
+                                    name="answer"
+                                    value="A"
+                                    class="mt-1 text-teal-500 focus:ring-teal-500"
+                                    {% if selected_option == 'A' %}checked{% endif %}
+                                    onchange="saveAnswer()"
+                                />
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm">
+                                            A
+                                        </span>
+                                        <span class="text-gray-800">{{ current_question.option_a }}</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Option B -->
+                            <label class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 option-label {% if selected_option == 'B' %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}" data-option="B">
+                                <input
+                                    type="radio"
+                                    name="answer"
+                                    value="B"
+                                    class="mt-1 text-teal-500 focus:ring-teal-500"
+                                    {% if selected_option == 'B' %}checked{% endif %}
+                                    onchange="saveAnswer()"
+                                />
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm">
+                                            B
+                                        </span>
+                                        <span class="text-gray-800">{{ current_question.option_b }}</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Option C -->
+                            <label class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 option-label {% if selected_option == 'C' %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}" data-option="C">
+                                <input
+                                    type="radio"
+                                    name="answer"
+                                    value="C"
+                                    class="mt-1 text-teal-500 focus:ring-teal-500"
+                                    {% if selected_option == 'C' %}checked{% endif %}
+                                    onchange="saveAnswer()"
+                                />
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm">
+                                            C
+                                        </span>
+                                        <span class="text-gray-800">{{ current_question.option_c }}</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- Option D -->
+                            <label class="flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-orange-300 hover:bg-orange-50 option-label {% if selected_option == 'D' %}border-teal-500 bg-teal-50{% else %}border-gray-200{% endif %}" data-option="D">
+                                <input
+                                    type="radio"
+                                    name="answer"
+                                    value="D"
+                                    class="mt-1 text-teal-500 focus:ring-teal-500"
+                                    {% if selected_option == 'D' %}checked{% endif %}
+                                    onchange="saveAnswer()"
+                                />
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="bg-gray-100 text-gray-600 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm">
+                                            D
+                                        </span>
+                                        <span class="text-gray-800">{{ current_question.option_d }}</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </form>
+                    </div>
+
+                    <!-- Navigation Footer -->
+                    <div class="bg-gray-50 px-8 py-6 border-t border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <button
+                                onclick="previousQuestion()"
+                                {% if not has_previous %}disabled{% endif %}
+                                class="flex items-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <i class="fas fa-chevron-left"></i>
+                                <span>Sebelumnya</span>
+                            </button>
+
+                            <div class="flex items-center space-x-4">
+                                <button
+                                    onclick="markForReview()"
+                                    class="flex items-center space-x-2 px-6 py-3 bg-yellow-100 text-yellow-700 rounded-lg font-semibold hover:bg-yellow-200 transition-all duration-200 border border-yellow-300"
+                                >
+                                    <i class="fas fa-bookmark"></i>
+                                    <span>Tandai</span>
+                                </button>
+
+                                <button
+                                    onclick="nextQuestion()"
+                                    {% if not has_next %}disabled{% endif %}
+                                    class="flex items-center space-x-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <span>Selanjutnya</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- Submit Confirmation Modal -->
-    <div
-      id="submitModal"
-      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center"
-    >
-      <div class="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl">
-        <div class="text-center">
-          <div
-            class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fas fa-exclamation-triangle text-orange-500 text-3xl"></i>
-          </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-4">
-            Konfirmasi Selesai Ujian
-          </h3>
-          <p class="text-gray-600 mb-6">
-            Apakah Anda yakin ingin menyelesaikan ujian?
-            <br /><strong>{{ unanswered_count }}</strong> soal belum dijawab.
-          </p>
-          <div class="flex space-x-4">
-            <button
-              onclick="hideSubmitModal()"
-              class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
-            >
-              Batal
-            </button>
-            <button
-              onclick="submitExam()"
-              class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-all"
-            >
-              Ya, Selesai
-            </button>
-          </div>
+    <div id="submitModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-exclamation-triangle text-orange-500 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">
+                    Konfirmasi Selesaikan Ujian
+                </h3>
+                <p class="text-gray-600 mb-6" id="modal-text">
+                    Apakah Anda yakin ingin menyelesaikan ujian?<br />
+                    <strong id="modal-unanswered-count">{{ unanswered_count }}</strong> soal belum dijawab.
+                </p>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
+                    <div class="flex items-center text-sm text-yellow-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span>Setelah diselesaikan, Anda tidak dapat mengubah jawaban lagi.</span>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <button
+                        onclick="hideSubmitModal()"
+                        class="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        onclick="submitExam()"
+                        id="confirm-submit-btn"
+                        class="flex-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition-all"
+                    >
+                        Ya, Selesaikan
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <!-- JavaScript -->
     <script>
-      // Question navigation using array-like structure
-      const questionQueue = {{ question_ids|safe }};
-      let currentIndex = {{ current_index }};
-      const answers = {{ user_answers|safe }};
+        // Initialize data structures
+        const examData = {
+            id: {{ exam.id }},
+            currentQuestion: {{ current_question_number }},
+            totalQuestions: {{ total_questions }},
+            timeRemaining: {{ time_remaining_seconds }},
+            questionIds: {{ question_ids|safe }}
+        };
 
-      // Timer functionality
-      let timeRemaining = {{ time_remaining_seconds }};
+        // Answer tracking using Map for O(1) operations
+        const answers = new Map();
+        
+        // Initialize with existing answers
+        {% for order, answer in user_answers.items %}
+            answers.set({{ order }}, "{{ answer }}");
+        {% endfor %}
 
-      function updateTimer() {
-          const hours = Math.floor(timeRemaining / 3600);
-          const minutes = Math.floor((timeRemaining % 3600) / 60);
-          const seconds = timeRemaining % 60;
+        let timerInterval;
 
-          const timerElement = document.getElementById('timer');
-          timerElement.textContent =
-              `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        // Timer functionality
+        function updateTimer() {
+            const hours = Math.floor(examData.timeRemaining / 3600);
+            const minutes = Math.floor((examData.timeRemaining % 3600) / 60);
+            const seconds = examData.timeRemaining % 60;
 
-          if (timeRemaining <= 300) { // 5 minutes warning
-              timerElement.parentElement.className = 'bg-red-200 text-red-900 px-4 py-2 rounded-lg border border-red-300';
-          }
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-          if (timeRemaining <= 0) {
-              submitExam();
-              return;
-          }
+            // Warning states
+            const timerContainer = document.getElementById('timer-container');
+            if (examData.timeRemaining <= 300) { // 5 minutes
+                timerContainer.className = 'bg-red-200 text-red-900 px-4 py-2 rounded-lg border border-red-300 animate-pulse';
+            } else if (examData.timeRemaining <= 600) { // 10 minutes
+                timerContainer.className = 'bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg border border-yellow-200';
+            }
 
-          timeRemaining--;
-      }
+            if (examData.timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                showNotification('Waktu habis! Ujian akan diselesaikan otomatis.', 'error');
+                setTimeout(submitExam, 2000);
+                return;
+            }
 
-      setInterval(updateTimer, 1000);
+            examData.timeRemaining--;
+        }
 
-      // Navigation functions implementing queue/stack concepts
-      function nextQuestion() {
-          if (currentIndex < questionQueue.length - 1) {
-              saveCurrentAnswer();
-              window.location.href = `?question=${currentIndex + 2}`;
-          }
-      }
+        // Start timer
+        timerInterval = setInterval(updateTimer, 1000);
 
-      function previousQuestion() {
-          if (currentIndex > 0) {
-              saveCurrentAnswer();
-              window.location.href = `?question=${currentIndex}`;
-          }
-      }
+        // Navigation functions
+        function nextQuestion() {
+            if (examData.currentQuestion < examData.totalQuestions) {
+                saveCurrentAnswer();
+                window.location.href = `?question=${examData.currentQuestion + 1}`;
+            }
+        }
 
-      function goToQuestion(questionNumber) {
-          saveCurrentAnswer();
-          window.location.href = `?question=${questionNumber}`;
-      }
+        function previousQuestion() {
+            if (examData.currentQuestion > 1) {
+                saveCurrentAnswer();
+                window.location.href = `?question=${examData.currentQuestion - 1}`;
+            }
+        }
 
-      // Answer handling
-      function saveAnswer() {
-          const form = document.getElementById('questionForm');
-          const formData = new FormData(form);
+        function goToQuestion(questionNumber) {
+            saveCurrentAnswer();
+            window.location.href = `?question=${questionNumber}`;
+        }
 
-          fetch("{% url 'cbt:save_answer' %}", {
-              method: 'POST',
-              body: formData,
-              headers: {
-                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.success) {
-                  updateQuestionNavigation();
-              }
-          });
-      }
+        // Answer handling
+        function saveAnswer() {
+            const form = document.getElementById('questionForm');
+            const formData = new FormData(form);
 
-      function saveCurrentAnswer() {
-          const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-          if (selectedAnswer) {
-              saveAnswer();
-          }
-      }
+            fetch("{% url 'cbt:save_answer' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const questionOrder = {{ current_question.order }};
+                    answers.set(questionOrder, formData.get('answer'));
+                    updateNavigationUI();
+                    showAnswerFeedback();
+                    showNotification('Jawaban disimpan', 'success');
+                } else {
+                    showNotification('Gagal menyimpan jawaban', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan', 'error');
+            });
+        }
 
-      function markForReview() {
-          // Implementation for marking question for review
-          fetch('{% url "cbt:mark_review" %}', {
-              method: 'POST',
-              body: JSON.stringify({
-                  question_id: {{ current_question.id }},
-                  mark: true
-              }),
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-              }
-          });
-      }
+        function saveCurrentAnswer() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+                const form = document.getElementById('questionForm');
+                const formData = new FormData(form);
+                
+                // Send synchronous request for page navigation
+                navigator.sendBeacon("{% url 'cbt:save_answer' %}", formData);
+            }
+        }
 
-      function updateQuestionNavigation() {
-          // Update navigation button colors based on answered status
-          const answeredQuestions = Object.keys(answers);
-          document.querySelectorAll('.question-nav-btn').forEach(btn => {
-              const questionNum = btn.dataset.question;
-              if (answeredQuestions.includes(questionNum)) {
-                  btn.className = btn.className.replace('bg-gray-100 text-gray-600 border-gray-300',
-                                                      'bg-teal-100 text-teal-700 border-teal-300');
-              }
-          });
-      }
+        function markForReview() {
+            const questionId = {{ current_question.id }};
+            
+            fetch('{% url "cbt:mark_review" %}', {
+                method: 'POST',
+                body: JSON.stringify({
+                    question_id: questionId,
+                    mark: true
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const markButton = event.target.closest('button');
+                    markButton.innerHTML = '<i class="fas fa-bookmark text-yellow-600"></i><span>Ditandai</span>';
+                    markButton.classList.add('bg-yellow-200');
+                    showNotification('Soal ditandai untuk review', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Gagal menandai soal', 'error');
+            });
+        }
 
-      // Modal functions
-      function showSubmitModal() {
-          document.getElementById('submitModal').classList.remove('hidden');
-          document.getElementById('submitModal').classList.add('flex');
-      }
+        // UI updates
+        function updateNavigationUI() {
+            const answeredQuestions = Array.from(answers.keys());
+            
+            document.querySelectorAll('.question-nav-btn').forEach(btn => {
+                const questionNum = parseInt(btn.dataset.question);
+                const isAnswered = answeredQuestions.includes(questionNum);
+                const isCurrent = questionNum === examData.currentQuestion;
+                
+                btn.className = 'question-nav-btn w-10 h-10 rounded-lg border-2 font-semibold transition-all duration-200';
+                
+                if (isCurrent) {
+                    btn.className += ' bg-orange-500 text-white border-orange-500';
+                } else if (isAnswered) {
+                    btn.className += ' bg-teal-100 text-teal-700 border-teal-300 hover:bg-teal-200';
+                } else {
+                    btn.className += ' bg-gray-100 text-gray-600 border-gray-300 hover:bg-gray-200';
+                }
+            });
+            
+            updateProgressBar();
+        }
 
-      function hideSubmitModal() {
-          document.getElementById('submitModal').classList.add('hidden');
-          document.getElementById('submitModal').classList.remove('flex');
-      }
+        function updateProgressBar() {
+            const answeredCount = answers.size;
+            const progressPercentage = (answeredCount / examData.totalQuestions) * 100;
+            
+            document.getElementById('progress-bar').style.width = progressPercentage + '%';
+            document.getElementById('answered-count').textContent = `${answeredCount}/${examData.totalQuestions}`;
+            document.getElementById('unanswered-count').textContent = examData.totalQuestions - answeredCount;
+        }
 
-      function submitExam() {
-          saveCurrentAnswer();
-          fetch('{% url "cbt:submit_exam" %}', {
-              method: 'POST',
-              headers: {
-                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-              }
-          })
-          .then(response => {
-              if (response.ok) {
-                  window.location.href = '{% url "cbt:exam_result" exam_id %}';
-              }
-          });
-      }
+        // Modal functions
+        function showSubmitModal() {
+            const modal = document.getElementById('submitModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            const unansweredCount = examData.totalQuestions - answers.size;
+            document.getElementById('modal-unanswered-count').textContent = unansweredCount;
+        }
 
-      // Auto-save functionality
-      setInterval(saveCurrentAnswer, 30000); // Auto-save every 30 seconds
+        function hideSubmitModal() {
+            const modal = document.getElementById('submitModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
 
-      // Prevent page refresh/back button
-      window.addEventListener('beforeunload', function(e) {
-          saveCurrentAnswer();
-          e.preventDefault();
-          e.returnValue = '';
-      });
+        function submitExam() {
+            saveCurrentAnswer();
+            
+            const submitButton = document.getElementById('confirm-submit-btn');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
+            submitButton.disabled = true;
+            
+            fetch(`{% url "cbt:submit_exam" exam.id %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    exam_id: examData.id,
+                    final_submission: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    clearInterval(timerInterval);
+                    showNotification('Ujian berhasil diselesaikan!', 'success');
+                    setTimeout(() => {
+                        window.location.href = `{% url "cbt:exam_result" exam.id %}`;
+                    }, 1500);
+                } else {
+                    throw new Error(data.error || 'Submission failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                showNotification('Gagal menyelesaikan ujian', 'error');
+                hideSubmitModal();
+            });
+        }
+
+        // Notification system
+        function showNotification(message, type) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            
+            notification.className = `p-4 rounded-lg shadow-lg max-w-sm transition-all duration-300 ${
+                type === 'success' 
+                    ? 'bg-green-100 text-green-800 border border-green-200' 
+                    : 'bg-red-100 text-red-800 border border-red-200'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (container.contains(notification)) {
+                        container.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function showAnswerFeedback() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                const label = selectedOption.closest('.option-label');
+                label.classList.add('ring-2', 'ring-teal-300');
+                setTimeout(() => {
+                    label.classList.remove('ring-2', 'ring-teal-300');
+                }, 1000);
+            }
+        }
+
+        // Auto-save and page protection
+        setInterval(saveCurrentAnswer, 30000);
+
+        window.addEventListener('beforeunload', function(e) {
+            saveCurrentAnswer();
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigationUI();
+        });
     </script>
+</body>
 {% endblock %}

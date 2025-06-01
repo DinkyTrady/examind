@@ -15,4 +15,5 @@ urlpatterns = [
     # guru
     path("guru/dashboard/", views.guru_dashboard, name="guru_dashboard"),
     path("guru/settings/", views.user_profile, name="user_profile"),
+    path("guru/report/", views.user_report, name="user_report"),
 ]

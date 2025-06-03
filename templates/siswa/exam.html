@@ -296,7 +296,7 @@
 
     <!-- JavaScript -->
     <script>
-        // Initialize data structures
+// Initialize data structures
         const examData = {
             id: {{ exam.id }},
             currentQuestion: {{ current_question_number }},
@@ -307,13 +307,15 @@
 
         // Answer tracking using Map for O(1) operations
         const answers = new Map();
-        
+
         // Initialize with existing answers
         {% for order, answer in user_answers.items %}
             answers.set({{ order }}, "{{ answer }}");
         {% endfor %}
 
         let timerInterval;
+        let isNavigating = false; // Flag untuk tracking navigasi internal
+        let hasUnsavedChanges = false; // Flag untuk tracking perubahan yang belum disimpan
 
         // Timer functionality
         function updateTimer() {
@@ -348,6 +350,7 @@
         // Navigation functions
         function nextQuestion() {
             if (examData.currentQuestion < examData.totalQuestions) {
+                isNavigating = true; // Set flag sebelum navigasi
                 saveCurrentAnswer();
                 window.location.href = `?question=${examData.currentQuestion + 1}`;
             }
@@ -355,12 +358,14 @@
 
         function previousQuestion() {
             if (examData.currentQuestion > 1) {
+                isNavigating = true; // Set flag sebelum navigasi
                 saveCurrentAnswer();
                 window.location.href = `?question=${examData.currentQuestion - 1}`;
             }
         }
 
         function goToQuestion(questionNumber) {
+            isNavigating = true; // Set flag sebelum navigasi
             saveCurrentAnswer();
             window.location.href = `?question=${questionNumber}`;
         }
@@ -369,6 +374,8 @@
         function saveAnswer() {
             const form = document.getElementById('questionForm');
             const formData = new FormData(form);
+
+            hasUnsavedChanges = false; // Reset flag setelah menyimpan
 
             fetch("{% url 'cbt:save_answer' %}", {
                 method: 'POST',
@@ -386,11 +393,13 @@
                     showAnswerFeedback();
                     showNotification('Jawaban disimpan', 'success');
                 } else {
+                    hasUnsavedChanges = true; // Set flag jika gagal menyimpan
                     showNotification('Gagal menyimpan jawaban', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                hasUnsavedChanges = true; // Set flag jika terjadi error
                 showNotification('Terjadi kesalahan', 'error');
             });
         }
@@ -403,6 +412,7 @@
                 
                 // Send synchronous request for page navigation
                 navigator.sendBeacon("{% url 'cbt:save_answer' %}", formData);
+                hasUnsavedChanges = false; // Reset flag setelah menyimpan
             }
         }
 
@@ -484,6 +494,7 @@
         }
 
         function submitExam() {
+            isNavigating = true; // Set flag untuk submit exam
             saveCurrentAnswer();
             
             const submitButton = document.getElementById('confirm-submit-btn');
@@ -520,6 +531,7 @@
                 submitButton.disabled = false;
                 showNotification('Gagal menyelesaikan ujian', 'error');
                 hideSubmitModal();
+                isNavigating = false; // Reset flag jika gagal
             });
         }
 
@@ -565,14 +577,47 @@
             }
         }
 
-        // Auto-save and page protection
-        setInterval(saveCurrentAnswer, 30000);
+        // Track perubahan jawaban
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'answer') {
+                hasUnsavedChanges = true;
+            }
+        });
 
+        // Auto-save
+        setInterval(() => {
+            if (hasUnsavedChanges) {
+                saveCurrentAnswer();
+            }
+        }, 30000);
+
+        // Improved beforeunload handler
+        window.addEventListener('beforeunload', function(e) {
+            // Jangan tampilkan peringatan jika:
+            // 1. Sedang dalam proses navigasi internal (pindah soal)
+            // 2. Tidak ada perubahan yang belum disimpan
+            // 3. Sedang submit exam
+            if (isNavigating || !hasUnsavedChanges) {
+                return;
+            }
+            
+            // Simpan jawaban current sebelum leave
+            saveCurrentAnswer();
+            
+            // Tampilkan peringatan hanya jika ada perubahan yang belum disimpan
+            e.preventDefault();
+            e.returnValue = 'Anda memiliki jawaban yang belum disimpan. Yakin ingin meninggalkan halaman?';
+            return e.returnValue;
+        });
+
+        // Alternative: Completely disable beforeunload untuk CBT
+        // Uncomment baris di bawah jika ingin menonaktifkan warning sepenuhnya:
+        /*
         window.addEventListener('beforeunload', function(e) {
             saveCurrentAnswer();
-            e.preventDefault();
-            e.returnValue = '';
+            // Tidak ada preventDefault() atau returnValue, sehingga tidak ada warning
         });
+        */
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {

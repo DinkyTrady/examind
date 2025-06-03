@@ -20,13 +20,22 @@ def exam_view(request, exam_id):
         messages.error(request, "Ujian belum dimulai.")
         return redirect("cbt:exam_all")
 
-    # Check if student has already completed the exam
-    has_attempt = StudentAnswer.objects.filter(
-        student=request.user, question__exam=exam
-    ).exists()
-    if has_attempt:
+    # Check if student has explicitly completed the exam (via submit button)
+    exam_completed = request.session.get(f"exam_{exam_id}_completed", False)
+    if exam_completed:
         messages.info(request, "Anda sudah mengerjakan ujian ini.")
         return redirect("cbt:exam_result", exam_id=exam_id)
+
+    # Check if exam time has expired
+    start_time = request.session.get(f"exam_{exam_id}_start_time")
+    if start_time:
+        start_time = timezone.datetime.fromisoformat(start_time)
+        time_elapsed = timezone.now() - start_time
+        if time_elapsed >= timedelta(minutes=exam.duration):
+            # Auto-submit if time is up
+            request.session[f"exam_{exam_id}_completed"] = True
+            messages.warning(request, "Waktu ujian telah habis.")
+            return redirect("cbt:exam_result", exam_id=exam_id)
 
     questions = exam.questions.order_by("order")
     total_questions = questions.count()
@@ -126,7 +135,6 @@ def save_answer(request):
 
 @login_required
 @require_POST
-@csrf_exempt  # optional: hanya untuk testing jika CSRF error, sebaiknya dihapus nanti
 def mark_review(request):
     try:
         data = json.loads(request.body)
